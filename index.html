@@ -6,7 +6,19 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Hello, World!</h1>
+		<div class="popup popup__your-name">
+			<input class="popup__your-name--input" type="text" placeholder="Input your name:">
+			<input class="popup__your-name--button" type="submit" value="Send">
+		</div>
+		<div class="popup popup__pc-name hidden">
+			<input class="popup__pc-name--input" type="text" placeholder="Input name your opponent:">
+			<input class="popup__pc-name--button" type="submit" value="Send">
+		</div>
+		<div class="popup popup__choose-first-move hidden">
+			<p>choose whose first move:</p>					
+			<input class="popup__choose-you popup__choose" type="submit">
+			<input class="popup__choose-pc popup__choose" type="submit">
+		</div>
 	<script src="main.js"></script>
 </body>
 </html>

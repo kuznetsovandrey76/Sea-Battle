@@ -2,5 +2,19 @@
 	margin: 0;
 }
 body {
-	background: khaki;
+}
+
+.popup {
+	width: 80%;
+	margin: 10px auto;
+	padding: 10px;
+	text-align: center;
+	
+	border: 1px solid;
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+}
+
+.hidden {
+	display: none;
 }
