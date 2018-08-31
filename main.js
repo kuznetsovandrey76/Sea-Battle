@@ -1,3 +1,4 @@
+'use strict';
 let yourName = document.querySelector('.popup__your-name--input');
 let pcName = document.querySelector('.popup__pc-name--input');
 

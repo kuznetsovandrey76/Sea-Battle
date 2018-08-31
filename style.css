@@ -1,20 +1,73 @@
 * {
 	margin: 0;
 }
-body {
-}
 
+/* всплывающие окна */
 .popup {
-	width: 80%;
-	margin: 10px auto;
+	width: 80%;	
+	margin: 0 auto;
 	padding: 10px;
-	text-align: center;
-	
-	border: 1px solid;
+	text-align: center;	
+	border: 1px solid lightgreen;
 	-webkit-border-radius: 10px;
 	        border-radius: 10px;
 }
 
 .hidden {
 	display: none;
+}
+
+/* фон игрового поля, тетрадный лист */
+.battlefield {
+	/* делится на 30px + 2px закрыть границу */
+	width: 782px; 
+	height: 482px; 
+	position: relative; 
+	margin: 0 auto;
+	background: url('img/grid.png') repeat;
+}
+
+/* поле для морского боя */
+.field {
+	width: 330px;
+	height: 330px;
+	position: relative;
+	top: 34px;
+	left: 34px;
+	background: url('img/playfield.png') no-repeat;
+}
+
+/* счетчики живых кораблей */
+.one,
+.two,
+.three,
+.four {
+	width: 30px;
+	height: 30px;
+	background: url('img/sprite.png');
+	position: relative;	
+} 
+
+.one {
+	top: 357px;
+	left: 87px;
+	background-position: 0 -60px;
+}
+
+.two {
+	top: 327px;
+	left: 147px;
+	background-position: -60px -60px;
+}
+
+.three {
+	top: 297px;
+	left: 207px;
+	background-position: -120px -60px;
+}
+
+.four {
+	top: 267px;
+	left: 267px;
+	background-position: -180px -60px;
 }
