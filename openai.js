@@ -1,3 +1,9 @@
+
+let getElement = function (className) {
+	return document.querySelector(className);
+}; 
+
+
 let getRandom = function(n) {
 	return Math.floor(Math.random() * n);
 };
@@ -90,18 +96,42 @@ let Pole =  {
 let fillField = function(x, y, arr) {
 	return 0;	
 }
-var field = document.querySelector('.field');
-var test = document.querySelector('.test');
+let field = getElement('.field');
+let dot = getElement('.dot');
 
 
-field.addEventListener('mousemove', (e) => {
+field.addEventListener('click', (e) => {
+	// 26px расстояние до внутреннего поля в playfield.png
+	if (e.offsetX - 26 > 2 && 
+		e.offsetX - 26 < 300 &&
+		e.offsetY - 26 > 2 &&
+		e.offsetY - 26 < 300) {
+		dot.classList.remove('hidden')
+		// Показывает координаты выстрела 
+		console.log(`x: ${Math.ceil((e.offsetX - 26) / 30)}, y: ${Math.ceil((e.offsetY - 26) / 30)}`);		
+		dot.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
+		dot.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
+	}
+
+	// let div = document.createElement('div');
+	// div.classList.add((text.value === 'blue' || text.value === 'tomato') ? text.value : 'test');
+	// div.textContent = 'World';
+	// field.appendChild(div);
 // field.addEventListener('click', (e) => {
 	// offset - координаты блока
 	// один кораблик 33px
-	// console.log(`x: ${Math.ceil(e.offsetX/33)}, y: ${Math.ceil(e.offsetY/33)}`);
-	test.style.left = 33*Math.ceil(e.offsetX/33)-33 + 'px';
-	test.style.top = 33*Math.ceil(e.offsetY/33)-33 + 'px';
-	document.querySelector('.test').classList.toggle('hidden');
+	// console.log(`x: ${Math.ceil((e.offsetX-26)/30)}, y: ${Math.ceil((e.offsetY-26)/30)}`);
+	// test.style.left = 30*Math.ceil(e.offsetX/30)-30 + 'px';
+	// test.style.top = 30*Math.ceil(e.offsetY/30)-30 + 'px';
+	// document.querySelector('.one').classList.toggle('hidden');
 });
 
 
+// Создаем двумерный массив: rows - строки, columns - столбцы
+let create2dArray = function (rows, columns) {
+   let arr = new Array(rows).fill(0);
+   for (let i = 0; i < rows; i++) {
+       arr[i] = new Array(columns).fill(0);
+   }
+   return arr;
+}

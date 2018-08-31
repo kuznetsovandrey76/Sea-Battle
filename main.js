@@ -25,5 +25,9 @@ chooseFirstStepPlayer.addEventListener('click', (e) => {
 	if (e.target.value === yourName.value || e.target.value === pcName.value) {
 		console.log(`First step: ${e.target.value}`);
 		document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
+		document.querySelector('.field-user').classList.toggle('hidden');
+		document.querySelector('.field-pc').classList.toggle('hidden');
+		document.querySelector('.name-user').textContent = yourName.value;
+		document.querySelector('.name-pc').textContent = pcName.value;
 	}
 });	

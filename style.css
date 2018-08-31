@@ -4,6 +4,8 @@
 
 /* всплывающие окна */
 .popup {
+	position: absolute;
+	z-index: 3;
 	width: 80%;	
 	margin: 0 auto;
 	padding: 10px;
@@ -28,12 +30,21 @@
 }
 
 /* поле для морского боя */
-.field {
+.field-user {
 	width: 330px;
 	height: 330px;
 	position: relative;
 	top: 34px;
 	left: 34px;
+	background: url('img/playfield.png') no-repeat;
+}
+
+.field-pc {
+	width: 330px;
+	height: 330px;
+	position: relative;
+	top: -296px;
+	left: 424px;
 	background: url('img/playfield.png') no-repeat;
 }
 
@@ -70,4 +81,26 @@
 	top: 267px;
 	left: 267px;
 	background-position: -180px -60px;
+}
+
+.dot {
+	width: 30px;
+	height: 30px;
+	background: url('img/sprite.png');
+	background-position: -240px -120px;
+	position: absolute;	
+}
+
+.name-user, 
+.name-pc {
+	position: absolute;
+	top: 5px;
+}
+
+.name-user {
+	left: 185px;	
+}
+
+.name-pc {
+	left: 575px;	
 }
