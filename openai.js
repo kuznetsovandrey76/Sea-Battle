@@ -139,83 +139,72 @@ let randomShip = function(type) {
 
 
 let checkLocationShip = function(matrix, coordX, coordY, direction, type, func) {
-			// let temp = func(type);	
-				for(let i = 0; i < type; i++) {
-					if (direction == 1) {
-						// проставляем корабль
-						matrix[coordY - 1][coordX - 1 + i] = 1;
-					} else {
-						matrix[coordY - 1 + i][coordX - 1] = 1;
-					}
-				}  
+	for(let i = 0; i < type; i++) {
+		if (direction == 1) {
+			// проставляем корабль
+			matrix[coordY - 1][coordX - 1 + i] = 1;
+		} else {
+			matrix[coordY - 1 + i][coordX - 1] = 1;
+		}
+	}  
 
-			// 1. Берем левую верхнюю координату
-			// 2. Рамка сверху
-			// Если не 0, с [coordy - 1][coordX - 1] по [coordy - 1][coordX + type + 1]
-				//  для direction == 1
-				if (direction == 1) {					
-						// Отмечаем Левый Верхний угол
-						if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
-						// Отмечаем Левый Нижний угол
-						if (coordX - 1 > 0 && coordY + 1 < 11) matrix[coordY][coordX - 2] = 2;
-						// Отмечаем Правый Нижний угол
-						if (coordX + type + 1 < 11 && coordY - 1 > 0) matrix[coordY - 2][coordX + type - 1] = 2;
-						// Отмечаем Правый Верхний угол
-						if (coordX + type + 1 < 11 && coordY + 1 < 11) matrix[coordY][coordX + type - 1] = 2;
-						// Отмечаем Рамка сверху
-						if (coordY - 1 > 0) {
-							for(let i = 0; i < type; i++) {
-								matrix[coordY - 2][coordX - 1 + i] = 2;
-							}
-						}
-						// Отмечаем Рамка снизу
-						if (coordY + 1 < 11) {
-							for(let i = 0; i < type; i++) {
-								matrix[coordY][coordX - 1 + i] = 2;
-							}
-						}
-						// Отмечаем Рамка слева
-						if (coordX - 1 > 0) matrix[coordY - 1][coordX - 2] = 2;
-						// Отмечаем Рамка справа
-						if (coordX + type + 1 < 11) matrix[coordY - 1][coordX + type - 1] = 2;
-				}
-				if (direction == 0) {					
-						// Отмечаем Левый Верхний угол
-						if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
-						// Отмечаем Левый Нижний угол
-						if (coordX - 1 > 0 && coordY + type < 11) matrix[coordY + type - 1][coordX - 2] = 2;
-						// Отмечаем Правый Нижний угол
-						if (coordX + 1 < 11 && coordY + type < 11) matrix[coordY + type - 1][coordX] = 2;
-						// Отмечаем Правый Верхний угол
-						// if (coordX + type + 1 < 11 && coordY + 1 < 11) matrix[coordY][coordX + type - 1] = 2;
-						// Отмечаем Рамка сверху
-						if (coordY - 1 > 0) {
-							for(let i = 0; i < type; i++) {
-								// matrix[coordY - 2][coordX - 1 + i] = 2;
-							}
-						}
-						// Отмечаем Рамка снизу
-						if (coordY + 1 < 11) {
-							for(let i = 0; i < type; i++) {
-								// matrix[coordY][coordX - 1 + i] = 2;
-							}
-						}
-						// Отмечаем Рамка слева
-						// if (coordX - 1 > 0) matrix[coordY - 1][coordX - 2] = 2;
-						// Отмечаем Рамка справа
-						// if (coordX + type + 1 < 11) matrix[coordY - 1][coordX + type - 1] = 2;
-				}
-
-			// добавляем границы вокруг корабля
-			// 3. Рамка снизу
-			// Если не 0, с [coordy + 1][coordX - 1] по [coordy - 1][coordX + type + 1]
-			// 4. Рамка сбоку
-			// Если не 0, с [coordy][coordX - 1] и [coordy][coordX + type + 1]
+	if (direction == 1) {					
+		// Отмечаем Левый Верхний угол
+		if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
+		// Отмечаем Левый Нижний угол
+		if (coordX - 1 > 0 && coordY + 1 < 11) matrix[coordY][coordX - 2] = 2;
+		// Отмечаем Правый Нижний угол
+		if (coordX + type + 1 < 11 && coordY - 1 > 0) matrix[coordY - 2][coordX + type - 1] = 2;
+		// Отмечаем Правый Верхний угол
+		if (coordX + type + 1 < 11 && coordY + 1 < 11) matrix[coordY][coordX + type - 1] = 2;
+		// Отмечаем Рамка сверху
+		if (coordY - 1 > 0) {
+			for(let i = 0; i < type; i++) {
+				matrix[coordY - 2][coordX - 1 + i] = 2;
+			}
+		}
+		// Отмечаем Рамка снизу
+		if (coordY + 1 < 11) {
+			for(let i = 0; i < type; i++) {
+				matrix[coordY][coordX - 1 + i] = 2;
+			}
+		}
+		// Отмечаем Рамка слева
+		if (coordX - 1 > 0) matrix[coordY - 1][coordX - 2] = 2;
+		// Отмечаем Рамка справа
+		if (coordX + type + 1 < 11) matrix[coordY - 1][coordX + type - 1] = 2;
+	}
+	if (direction == 0) {					
+		// Отмечаем Левый Верхний угол
+		if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
+		// Отмечаем Левый Нижний угол
+		if (coordX - 1 > 0 && coordY + type < 11) matrix[coordY + type - 1][coordX - 2] = 2;
+		// Отмечаем Правый Нижний угол
+		if (coordX + 1 < 11 && coordY + type < 11) matrix[coordY + type - 1][coordX] = 2;
+		// Отмечаем Правый Верхний угол
+		if (coordX + 1 < 11 && coordY - 1 > 0) matrix[coordY - 2][coordX] = 2;
+		// Отмечаем Рамка сверху
+		if (coordY - 1 > 0) matrix[coordY - 2][coordX - 1] = 2; 
+		// Отмечаем Рамка снизу
+		if (coordY + type < 11) matrix[coordY + 2][coordX - 1] = 2;
+		// Отмечаем Рамка слева
+		if (coordX - 1 > 0) {
+			for(let i = 0; i < type; i++) {
+				matrix[coordY - 1 + i][coordX - 2] = 2;	
+			}
+		}
+		// Отмечаем Рамка справа
+		if (coordX + 1 < 11) {
+			for(let i = 0; i < type; i++) {
+				matrix[coordY - 1 + i][coordX] = 2;	
+			}
+		}
+	}
 	console.log(matrix);	
-}
+};
 
 // test
-checkLocationShip(Matrix.matrix, 4, 8, 0, 3, randomShip);
+checkLocationShip(Matrix.matrix, 3, 4, 1, 2, randomShip);
 
 
 
