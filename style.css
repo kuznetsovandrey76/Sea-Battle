@@ -4,10 +4,10 @@
 
 /* всплывающие окна */
 .popup {
-	position: absolute;
+	/*position: absolute;*/
 	z-index: 3;
 	width: 80%;	
-	margin: 0 auto;
+	margin: 10px auto;
 	padding: 10px;
 	text-align: center;	
 	border: 1px solid lightgreen;
@@ -121,4 +121,11 @@
 	background: url('img/sprite.png');
 	background-position: -300px -120px;
 
+} 
+.shade {
+	width: 30px;
+	height: 30px;
+	position: absolute;	
+	background: url('img/sprite.png');
+	background-position: -360px -120px;
 } 

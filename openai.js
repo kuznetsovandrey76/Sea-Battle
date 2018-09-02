@@ -6,6 +6,8 @@ let getRandom = function(n) {
 	return Math.floor(Math.random() * n);
 };
 
+
+
 // MATRIX
 
 // Создаем двумерный массив: rows - строки, columns - столбцы
@@ -37,7 +39,6 @@ let randomShip = function(type) {
 	this.type = type;
 	// 1 - right / горизонталь, 0 - bottom / вертикаль  
 	let directions = ['right', 'bottom'];
-
 	// Рандомное направление  
 	this.direction = getRandom(2);
 	// console.log(`type: ${this.type + 1}`, `direction: ${directions[this.direction]}`);
@@ -51,7 +52,7 @@ let randomShip = function(type) {
 			this.x = getRandom(10) + 1; 
 		}
 		this.y = getRandom(10) + 1;
-		// console.log('ok x,', `type: ${this.type+1}`, `coordX: ${this.x+1}`)		
+		// console.log('ok x,', `type: ${this.type+1}`, `coordX: ${this.x+1}`)
 	}
 	// Проверка, если корабль расположен по вертикали
 	if (this.direction == 0) {
@@ -250,6 +251,25 @@ drawShips(pcShips, '.field-pc');
 
 let field = getElement('.field');
 
+// Отсюда берутся данные для отображения статистики
+let userAndPCShips = {
+	user: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	}, 
+	pc: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	} 
+};
+
+
+
+
 field.addEventListener('click', (e) => {
 	// 26px расстояние до внутреннего поля в playfield.png
 	if (e.offsetX - 26 > 2 && 
@@ -259,8 +279,11 @@ field.addEventListener('click', (e) => {
 
 		// Показывает координаты выстрела 
 		// console.log(`x: ${Math.ceil((e.offsetX - 26) / 30)}, y: ${Math.ceil((e.offsetY - 26) / 30)}`);		
+		
 		let coordX = Math.ceil((e.offsetX - 26) / 30);
 		let coordY = Math.ceil((e.offsetY - 26) / 30);
+		// Координаты выстрела в виде строки, для взаимодействия с coordArr
+		// console.log('' + coordX + coordY);
 
 		// Проверка куда произведен выстрел
 		// 0 - мимо
@@ -273,6 +296,19 @@ field.addEventListener('click', (e) => {
 			div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
 			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
 			field.appendChild(div); 
+
+			// При попадании, находим в какой тип корабля попал,
+			// изменяем данные в coordArr
+			for(let i = 0; i < userShips.length; i++) {
+					if ((userShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
+						// Заменяю координату палубы в которую попали на 0
+						userShips[i].coordArr[(userShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
+						// Перевожу массив с координатами корабля в строку и сравниваю с 0
+						(!(parseInt((userShips[i].coordArr).join('')))) ? 
+							console.log(userShips[i].type, 'kill') : '';
+							// !!!
+				} 			
+			}
 			
 		} 
 		if (matrixUser[coordY - 1][coordX - 1] == 0 || matrixUser[coordY - 1][coordX - 1] == 2) {
@@ -286,3 +322,48 @@ field.addEventListener('click', (e) => {
 	}
 
 });
+
+field.addEventListener('contextmenu', e => {
+	e.preventDefault();
+		if (e.offsetX - 26 > 2 && 
+		e.offsetX - 26 < 300 &&
+		e.offsetY - 26 > 2 &&
+		e.offsetY - 26 < 300) {
+			// console.log(1)
+			let coordX = Math.ceil((e.offsetX - 26) / 30);
+			let coordY = Math.ceil((e.offsetY - 26) / 30);
+		if (matrixUser[coordY - 1][coordX - 1] != 1) {
+			let field = document.querySelector('.field-user');
+			let div = document.createElement('div');
+			div.classList.add('shade');
+			div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
+			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
+			field.appendChild(div); 
+		}
+	}
+});
+
+
+
+// Добавляем в данные каждого корабля массив 
+// из координат каждой палубы в виде строки
+let toStringCoordShip = function(ships) {
+	// Берем все корабли по очереди
+	for(let i = 0; i < ships.length; i++) {
+		ships[i].coordArr = [];
+		// В каждом корабле отталкиваемся от его типа
+		for(let j = 0; j < ships[i].type; j++) {
+		 	if (ships[i].direction) {
+		 		ships[i].coordArr.push('' + (ships[i].coordX + j) + ships[i].coordY);
+		 	} else {
+		 		ships[i].coordArr.push('' + ships[i].coordX + (ships[i].coordY + j));
+		 	} 
+		}
+
+	}
+}
+
+toStringCoordShip(userShips);
+toStringCoordShip(pcShips);
+
+// Добавить алгоритм выстрелов PC
