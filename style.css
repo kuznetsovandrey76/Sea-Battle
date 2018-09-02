@@ -27,6 +27,7 @@
 	position: relative; 
 	margin: 0 auto;
 	background: url('img/grid.png') repeat;
+	/*z-index: -6*/
 }
 
 /* поле для морского боя */
@@ -37,6 +38,7 @@
 	top: 34px;
 	left: 34px;
 	background: url('img/playfield.png') no-repeat;
+	/*z-index: -2;*/
 }
 
 .field-pc {
@@ -73,7 +75,7 @@
 
 .three {
 	top: 297px;
-	left: 207px;
+	left: 207px; 
 	background-position: -120px -60px;
 }
 
@@ -89,6 +91,7 @@
 	background: url('img/sprite.png');
 	background-position: -240px -120px;
 	position: absolute;	
+	z-index: 10;
 }
 
 .name-user, 
@@ -103,4 +106,10 @@
 
 .name-pc {
 	left: 575px;	
+}
+
+.ship {
+	/*background: url('img/sprite.png');*/
+	position: absolute;	
+	/*z-index: -3;*/
 }

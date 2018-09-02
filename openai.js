@@ -17,28 +17,9 @@ let create2dArray = function (rows, columns) {
    return arr;
 }
 
-let matrix = create2dArray(10, 10); 
-
 // Массив координат
-let Matrix =  {
-	matrix: matrix,
-	show: function() {
-		console.log(this.matrix);
-	},
-	change: function(x, y, type) {
-		// где type
-		// 0 - пустая клетка
-		// 1 - палуба корабля
-		// 2 - клетка, отмеченная игроком / запрет
-		// 3 - промах
-		// 4 - попадание
-		this.matrix[y-1][x-1] = type; // !
-	}
-};
-
-// let fillField = function(x, y, arr) {
-// 	return 0;	
-// }
+let matrix = create2dArray(10, 10); 
+let matrixPC = create2dArray(10, 10); 
 
 let field = getElement('.field');
 let dot = getElement('.dot');
@@ -59,14 +40,14 @@ field.addEventListener('click', (e) => {
 		// Изменяем матрицу координат
 		let coordX = Math.ceil((e.offsetX - 26) / 30);
 		let coordY = Math.ceil((e.offsetY - 26) / 30);
-		Matrix.change(coordX, coordY, 2);
-		Matrix.show();
 	}
 });
 
-// SHIPS 
 
-let shipsArr = [];
+
+// SHIPS 
+let userShips = [];
+let pcShips = [];
 
 // Создаю корабль с корректными координатами
 let randomShip = function(type) {
@@ -119,17 +100,26 @@ let randomShip = function(type) {
 };
 
 let check = function(ship) {
-	// console.log(ship.coordX, ship.coordY, ship.direction, ship.type);
+	this.ship = ship;
 	// Проверка не заняты ли координаты другим кораблем или его обводкой (1 или 2)
-	for(let i = 0; i < ship.type; i++) {
-		if (ship.direction == 1) {
-			if (matrix[ship.coordY - 1][ship.coordX - 1 + i]) {
+	for(let i = 0; i < this.ship.type; i++) {
+		if (this.ship.direction == 1) {
+			if (this.ship.coordX == 10) {
+				// исправить баг, расположение корабля в 10 столбце 
+				return false;
+			}
+			if (matrix[this.ship.coordY - 1][this.ship.coordX - 1 + i]) {
 				return false;
 			} 
-		} else {
-			if (matrix[ship.coordY - 1 + i][ship.coordX - 1]) {
-				return false;
-			} 
+		} 
+		if (this.ship.direction == 0) {
+		if (this.ship.coordX == 10) {
+			// исправить баг, расположение корабля в 10 столбце 
+			return false;
+		}
+		if (matrix[this.ship.coordY - 1 + i][this.ship.coordX - 1]) {
+			return false;
+		} 
 		}
 	}
 	return ship;
@@ -187,7 +177,7 @@ let addShip = function(ship) {
 		// Отмечаем Рамка сверху
 		if (ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX - 1] = 2; 
 		// Отмечаем Рамка снизу
-		if (ship.coordY + ship.type < 11) matrix[ship.coordY + type - 1][ship.coordX - 1] = 2;
+		if (ship.coordY + ship.type < 11) matrix[ship.coordY + ship.type - 1][ship.coordX - 1] = 2;
 		// Отмечаем Рамка слева
 		if (ship.coordX - 1 > 0) {
 			for(let i = 0; i < ship.type; i++) {
@@ -200,6 +190,7 @@ let addShip = function(ship) {
 				matrix[ship.coordY - 1 + i][ship.coordX] = 2;	
 			}
 		}
+		// console.log(matrix)
 	}
 };
 
@@ -221,10 +212,11 @@ let addAllShips = function() {
 
 	let arr = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
-	for(let i = 0; i < 10; i++ ) {
+	for(let i = 0; i < arr.length; i++ ) {
 	
 		// 1. Создаю рандомный корабль
 		let ship = check(createShip(randomShip, arr[i]));
+
 		// 2. Проверка, свободно ли место для размещения
 		while (!ship) {
 			ship = check(createShip(randomShip, arr[i]));
@@ -232,14 +224,15 @@ let addAllShips = function() {
 
 		// Информация о корабле
 		// console.log(ship);
-		shipsArr.push(ship);
 
-	 	// 3. Когда проверка пройдена, добавление и прорисовка и обводка
+		// Добавление в массив, координат кораблей, для последующей прорисовки
+		userShips.push(ship);
+
+	 	// 3. Когда проверка пройдена, добавление коробля в матрицу вместе с обводкой
 		addShip(ship);	
 	} 
 
-	// console.log('Матрица координат');
-	// console.log(matrix);
+
 };
 
 // Формирование поля с рандомными кораблями
@@ -248,16 +241,26 @@ addAllShips();
 
 
 // Прорисовка кораблей
-let drawShips = function(arr) {
+let drawShips = function(arr, user) {
 	for (var i = 0; i < arr.length; i++) {
-		console.log(arr[i]);
-		let coordX = arr[i].coordX * 30 - 30; 
-		let coordY = arr[i].coordY * 30 - 30;
+
+		let coordX = arr[i].coordX * 30 - 5; 
+		let coordY = arr[i].coordY * 30 - 5;
 		let width = arr[i].direction ? arr[i].type * 30 : 30;
 		let height = arr[i].direction ? 30 : arr[i].type * 30;
-		console.log(coordX, coordY, width, height);		
+
+		// Добавляем корабль на поле
+		let field = document.querySelector(user);
+		let div = document.createElement('div');
+		div.classList.add('ship');
+		div.style.width = width + 'px';
+		div.style.height = height + 'px';
+		div.style.left = coordX + 'px';
+		div.style.top = coordY + 'px';
+		div.style.border = '2px solid purple';
+		field.appendChild(div); 
 	}
 }
 
-console.log('Список кораблей');
-drawShips(shipsArr);
+drawShips(userShips, '.field-user');
+drawShips(userShips, '.field-pc');
