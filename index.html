@@ -5,8 +5,7 @@
 	<title>Sea Battle</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
-
+<body>	
 		<div class="popup popup__your-name">
 			<input class="popup__your-name--input" type="text" placeholder="Input your name:">
 			<input class="popup__your-name--button" type="submit" value="Send">
@@ -22,6 +21,8 @@
 		</div>
 
 		<div class="battlefield">
+
+			<!-- Поле по которому стреляет User -->
 			<p class="name-user"></p>
 			<div class="field field-user ">
 				<div class="dot hidden"></div>
@@ -31,6 +32,7 @@
 				<div class="four"></div>				
 			</div>	
 
+			<!-- Поле по которому стреляет PC -->
 			<p class="name-pc"></p>
 			<div class="field field-pc ">
 				<div class="dot hidden"></div>
@@ -42,7 +44,7 @@
 
 		</div> 	
 
-
+	<!-- popup script -->
 	<script src="main.js"></script>
 	<script src="openai.js"></script>
 </body>

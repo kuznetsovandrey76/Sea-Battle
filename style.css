@@ -91,7 +91,7 @@
 	background: url('img/sprite.png');
 	background-position: -240px -120px;
 	position: absolute;	
-	z-index: 10;
+	/*z-index: 10;*/
 }
 
 .name-user, 
@@ -113,3 +113,12 @@
 	position: absolute;	
 	/*z-index: -3;*/
 }
+
+.knock {
+	width: 30px;
+	height: 30px;
+	position: absolute;	
+	background: url('img/sprite.png');
+	background-position: -300px -120px;
+
+} 
