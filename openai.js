@@ -116,22 +116,25 @@ let randomShip = function(type) {
 
 // Не прошел проверку
 let stop = function() {
-	console.log('end...');
+	console.log('error');
 	return false;
 }
 
 let check = function(ship) {
-	console.log(ship.coordX, ship.coordY, ship.direction, ship.type);
-	// Проверка на заняты ли координаты другим кораблем или его обводкой
+	// console.log(ship.coordX, ship.coordY, ship.direction, ship.type);
+	// Проверка не заняты ли координаты другим кораблем или его обводкой (1 или 2)
 	for(let i = 0; i < ship.type; i++) {
 		if (ship.direction == 1) {
-			// если до ? true / попали на занятую ячейку равную 1 или 2
-			// операция прекратится
-			(matrix[ship.coordY - 1][ship.coordX - 1 + i]) ? stop() : '';
+			if (matrix[ship.coordY - 1][ship.coordX - 1 + i]) {
+				return false;
+			} 
 		} else {
-			(matrix[ship.coordY - 1 + i][ship.coordX - 1]) ? stop() : '';
+			if (matrix[ship.coordY - 1 + i][ship.coordX - 1]) {
+				return false;
+			} 
 		}
-	}  
+	}
+	return ship;
 };
 
 let addShip = function(ship) {
@@ -186,7 +189,7 @@ let addShip = function(ship) {
 		// Отмечаем Рамка сверху
 		if (ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX - 1] = 2; 
 		// Отмечаем Рамка снизу
-		if (ship.coordY + ship.type < 11) matrix[ship.coordY + 1][ship.coordX - 1] = 2;
+		if (ship.coordY + ship.type < 11) matrix[ship.coordY + type - 1][ship.coordX - 1] = 2;
 		// Отмечаем Рамка слева
 		if (ship.coordX - 1 > 0) {
 			for(let i = 0; i < ship.type; i++) {
@@ -200,29 +203,43 @@ let addShip = function(ship) {
 			}
 		}
 	}
-	console.log(matrix);	
 };
 
 // Создаем корабль
 let createShip = function(func, type) {
 	let ship = func(type); 
 	return ship;
-}
+};
 
 
+let addAllShips = function() {
+	// Тип корабля и его количестов
+	let type = {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	};
 
-// Тип корабля и его количестов
-let type = {
-	singledeck : 4,
-	doubledeck : 3,
-	tripledeck : 2,
-	fourdeck : 1
-}
+	let arr = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
+	for(let i = 0; i < 10; i++ ) {
+	
+		// 1. Создаю рандомный корабль
+		let ship = check(createShip(randomShip, arr[i]));
+		// 2. Проверка, свободно ли место для размещения
+		while (!ship) {
+			ship = check(createShip(randomShip, arr[i]));
+		}
 
-// 1. Создаю раноиный корабль
-let testShip = createShip(randomShip, 2);
-// 2. Проверка, свободно ли место для размещения
-check(testShip);
-// 3. Если проверка пройдена, добавление и прорисовка и обводка
-addShip(testShip);
+		// Информация о корабле
+		// console.log(ship);
+
+	 	// 3. Когда проверка пройдена, добавление и прорисовка и обводка
+		addShip(ship);	
+	} 
+	console.log(matrix);
+};
+
+// Формирование поля с рандомными кораблями
+addAllShips();
