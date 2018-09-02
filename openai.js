@@ -64,32 +64,9 @@ field.addEventListener('click', (e) => {
 });
 
 
-// SHIPS
-
-let Ships = function (player, obj) {
-		// на каком поле создаётся данный корабль
-		this.player 	= player;
-		// уникальное имя корабля
-		this.shipname 	= obj.shipname;
-		//количество палуб
-		this.decks		= obj.decks;
-		// координата X первой палубы
-		this.x0			= obj.x;
-	 	// координата Y первой палубы
-		this.y0			= obj.y;
-		// направлении расположения палуб
-		this.kx			= obj.kx;
-		this.ky 		= obj.ky;
-		// счётчик попаданий
-		this.hits 		= 0;
-		// массив с координатами палуб корабля
-		this.matrix		= [];
-	}
-
-
-
+// Создаю корабль с корректными координатами
 let randomShip = function(type) {
-	// type - вид корабля
+	// type - число, количество палуб
 	// 1 - singledeck
 	// 2 - doubledeck
 	// 3 - tripledeck
@@ -127,7 +104,7 @@ let randomShip = function(type) {
 	// console.log(`ship: ${this.type+1}, coordX: ${this.x+1}, coordY: ${this.y+1}, direction: ${directions[this.direction]}`);
 	return {
 		// Тип корабля / количество палуб
-		// type: this.typeype,
+		type: this.type,
 		// Координата Х первой палубы
 		coordX: this.x,
 		// Координата У первой палубы
@@ -137,91 +114,115 @@ let randomShip = function(type) {
 	}
 };
 
+// Не прошел проверку
+let stop = function() {
+	console.log('end...');
+	return false;
+}
 
-let checkLocationShip = function(matrix, coordX, coordY, direction, type, func) {
-	for(let i = 0; i < type; i++) {
-		if (direction == 1) {
-			// проставляем корабль
-			matrix[coordY - 1][coordX - 1 + i] = 1;
+let check = function(ship) {
+	console.log(ship.coordX, ship.coordY, ship.direction, ship.type);
+	// Проверка на заняты ли координаты другим кораблем или его обводкой
+	for(let i = 0; i < ship.type; i++) {
+		if (ship.direction == 1) {
+			// если до ? true / попали на занятую ячейку равную 1 или 2
+			// операция прекратится
+			(matrix[ship.coordY - 1][ship.coordX - 1 + i]) ? stop() : '';
 		} else {
-			matrix[coordY - 1 + i][coordX - 1] = 1;
+			(matrix[ship.coordY - 1 + i][ship.coordX - 1]) ? stop() : '';
 		}
 	}  
+};
 
-	if (direction == 1) {					
+let addShip = function(ship) {
+	// Прорисовка корабля и контура вокруг него
+	for(let i = 0; i < ship.type; i++) {
+		if (ship.direction == 1) {
+			// Отмечаем координаты корабля
+			matrix[ship.coordY - 1][ship.coordX - 1 + i] = 1;
+		} else {
+			matrix[ship.coordY - 1 + i][ship.coordX - 1] = 1;
+		}
+	}  
+	// Отмечаем / 2 / область вокруг корабля 
+	// Если корабль расположен горизонтально
+	if (ship.direction == 1) {					
 		// Отмечаем Левый Верхний угол
-		if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
+		if (ship.coordX - 1 > 0 && ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX - 2] = 2;
 		// Отмечаем Левый Нижний угол
-		if (coordX - 1 > 0 && coordY + 1 < 11) matrix[coordY][coordX - 2] = 2;
+		if (ship.coordX - 1 > 0 && ship.coordY + 1 < 11) matrix[ship.coordY][ship.coordX - 2] = 2;
 		// Отмечаем Правый Нижний угол
-		if (coordX + type + 1 < 11 && coordY - 1 > 0) matrix[coordY - 2][coordX + type - 1] = 2;
+		if (ship.coordX + ship.type + 1 < 11 && ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX + ship.type - 1] = 2;
 		// Отмечаем Правый Верхний угол
-		if (coordX + type + 1 < 11 && coordY + 1 < 11) matrix[coordY][coordX + type - 1] = 2;
+		if (ship.coordX + ship.type + 1 < 11 && ship.coordY + 1 < 11) matrix[ship.coordY][ship.coordX + ship.type - 1] = 2;
 		// Отмечаем Рамка сверху
-		if (coordY - 1 > 0) {
-			for(let i = 0; i < type; i++) {
-				matrix[coordY - 2][coordX - 1 + i] = 2;
+		if (ship.coordY - 1 > 0) {
+			for(let i = 0; i < ship.type; i++) {
+				matrix[ship.coordY - 2][ship.coordX - 1 + i] = 2;
 			}
 		}
 		// Отмечаем Рамка снизу
-		if (coordY + 1 < 11) {
-			for(let i = 0; i < type; i++) {
-				matrix[coordY][coordX - 1 + i] = 2;
+		if (ship.coordY + 1 < 11) {
+			for(let i = 0; i < ship.type; i++) {
+				matrix[ship.coordY][ship.coordX - 1 + i] = 2;
 			}
 		}
 		// Отмечаем Рамка слева
-		if (coordX - 1 > 0) matrix[coordY - 1][coordX - 2] = 2;
+		if (ship.coordX - 1 > 0) matrix[ship.coordY - 1][ship.coordX - 2] = 2;
 		// Отмечаем Рамка справа
-		if (coordX + type + 1 < 11) matrix[coordY - 1][coordX + type - 1] = 2;
+		if (ship.coordX + ship.type + 1 < 11) matrix[ship.coordY - 1][ship.coordX + ship.type - 1] = 2;
 	}
-	if (direction == 0) {					
+	 
+	// Если корабль расположен вертикально
+	if (ship.direction == 0) {					
 		// Отмечаем Левый Верхний угол
-		if (coordX - 1 > 0 && coordY - 1 > 0) matrix[coordY - 2][coordX - 2] = 2;
+		if (ship.coordX - 1 > 0 && ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX - 2] = 2;
 		// Отмечаем Левый Нижний угол
-		if (coordX - 1 > 0 && coordY + type < 11) matrix[coordY + type - 1][coordX - 2] = 2;
+		if (ship.coordX - 1 > 0 && ship.coordY + ship.type < 11) matrix[ship.coordY + ship.type - 1][ship.coordX - 2] = 2;
 		// Отмечаем Правый Нижний угол
-		if (coordX + 1 < 11 && coordY + type < 11) matrix[coordY + type - 1][coordX] = 2;
+		if (ship.coordX + 1 < 11 && ship.coordY + ship.type < 11) matrix[ship.coordY + ship.type - 1][ship.coordX] = 2;
 		// Отмечаем Правый Верхний угол
-		if (coordX + 1 < 11 && coordY - 1 > 0) matrix[coordY - 2][coordX] = 2;
+		if (ship.coordX + 1 < 11 && ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX] = 2;
 		// Отмечаем Рамка сверху
-		if (coordY - 1 > 0) matrix[coordY - 2][coordX - 1] = 2; 
+		if (ship.coordY - 1 > 0) matrix[ship.coordY - 2][ship.coordX - 1] = 2; 
 		// Отмечаем Рамка снизу
-		if (coordY + type < 11) matrix[coordY + 2][coordX - 1] = 2;
+		if (ship.coordY + ship.type < 11) matrix[ship.coordY + 1][ship.coordX - 1] = 2;
 		// Отмечаем Рамка слева
-		if (coordX - 1 > 0) {
-			for(let i = 0; i < type; i++) {
-				matrix[coordY - 1 + i][coordX - 2] = 2;	
+		if (ship.coordX - 1 > 0) {
+			for(let i = 0; i < ship.type; i++) {
+				matrix[ship.coordY - 1 + i][ship.coordX - 2] = 2;	
 			}
 		}
 		// Отмечаем Рамка справа
-		if (coordX + 1 < 11) {
-			for(let i = 0; i < type; i++) {
-				matrix[coordY - 1 + i][coordX] = 2;	
+		if (ship.coordX + 1 < 11) {
+			for(let i = 0; i < ship.type; i++) {
+				matrix[ship.coordY - 1 + i][ship.coordX] = 2;	
 			}
 		}
 	}
 	console.log(matrix);	
 };
 
-// test
-checkLocationShip(Matrix.matrix, 3, 4, 1, 2, randomShip);
+// Создаем корабль
+let createShip = function(func, type) {
+	let ship = func(type); 
+	return ship;
+}
 
 
 
-// Записать координаты в матрицу
-let addShip = function(matrix, func, type) {
-	// console.log(matrix);	
-	let temp = func(type);	
-	console.log(temp);
-	for(let i = 0; i < type; i++) {
-		if (temp.direction == 1) {
-			// проставляем корабль
-			matrix[temp.coordY - 1][temp.coordX - 1 + i] = 1;
-		} else {
-			matrix[temp.coordY - 1 + i][temp.coordX - 1] = 1;
-		}
-	}  
-	console.log(matrix);	
-};
+// Тип корабля и его количестов
+let type = {
+	singledeck : 4,
+	doubledeck : 3,
+	tripledeck : 2,
+	fourdeck : 1
+}
 
-// addShip(Matrix.matrix, randomShip, 4);
+
+// 1. Создаю раноиный корабль
+let testShip = createShip(randomShip, 2);
+// 2. Проверка, свободно ли место для размещения
+check(testShip);
+// 3. Если проверка пройдена, добавление и прорисовка и обводка
+addShip(testShip);
