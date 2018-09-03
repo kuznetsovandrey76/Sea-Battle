@@ -376,16 +376,16 @@ let updateNumberOfShips = function (whoseShips, shipKilled) {
 	// !!! Не обновляет данные если финальный выстрел по 10 столбцу
 	// console.log(whoseShips);
 	if (shipKilled) {
-		if (shipKilled == 1) userAndPCShips.whoseShips.singledeck -= 1;
-		else if (shipKilled == 2) userAndPCShips.whoseShips.doubledeck -= 1;
-		else if (shipKilled == 3) userAndPCShips.whoseShips.tripledeck -= 1;
-		else if (shipKilled == 4) userAndPCShips.whoseShips.fourdeck -= 1;
+		if (shipKilled == 1) (userAndPCShips[whoseShips]).singledeck -= 1;
+		else if (shipKilled == 2) (userAndPCShips[whoseShips]).doubledeck -= 1;
+		else if (shipKilled == 3) (userAndPCShips[whoseShips]).tripledeck -= 1;
+		else if (shipKilled == 4) (userAndPCShips[whoseShips]).fourdeck -= 1;
 	}
 	
-	getElement('.one p').textContent = userAndPCShips.whoseShips.singledeck;
-	getElement('.two p').textContent = userAndPCShips.whoseShips.doubledeck;
-	getElement('.three p').textContent = userAndPCShips.whoseShips.tripledeck;
-	getElement('.four p').textContent = userAndPCShips.whoseShips.fourdeck;
+	getElement('.one p').textContent = (userAndPCShips[whoseShips]).singledeck;
+	getElement('.two p').textContent = (userAndPCShips[whoseShips]).doubledeck;
+	getElement('.three p').textContent = (userAndPCShips[whoseShips]).tripledeck;
+	getElement('.four p').textContent = (userAndPCShips[whoseShips]).fourdeck;
 }
 
 updateNumberOfShips(userShips, 0)
