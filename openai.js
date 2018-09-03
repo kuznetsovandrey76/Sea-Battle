@@ -253,6 +253,20 @@ let field = getElement('.field');
 
 // Отсюда берутся данные для отображения статистики
 
+let userAndPCShips = {
+	user: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	}, 
+	pc: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	} 
+};
 
 
 // Действия при нажатии левой кнопки по игровому полю 
@@ -292,7 +306,9 @@ field.addEventListener('click', (e) => {
 						userShips[i].coordArr[(userShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((userShips[i].coordArr).join('')))) {
-							updateNumberOfShips(userShips, userShips[i].type);						
+							// Обратит внимание userAndPCShips и userShips разные массивы
+							// Разобраться с именами
+							updateNumberOfShips(userAndPCShips, 'user', userShips[i].type);						
 						} 
 				} 			
 			}
@@ -356,39 +372,26 @@ toStringCoordShip(pcShips);
 
 // Добавить алгоритм выстрелов PC
 
-let userAndPCShips = {
-	user: {
-		singledeck : 4,
-		doubledeck : 3,
-		tripledeck : 2,
-		fourdeck : 1
-	}, 
-	pc: {
-		singledeck : 4,
-		doubledeck : 3,
-		tripledeck : 2,
-		fourdeck : 1
-	} 
-};
 
 // Обновляет данные при нажатии правой кнопкой по игровому полю
-let updateNumberOfShips = function (whoseShips, shipKilled) {
+let updateNumberOfShips = function (numberOfShips, whoseShips, shipKilled) {
 	// !!! Не обновляет данные если финальный выстрел по 10 столбцу
-	// console.log(whoseShips);
+	console.log(shipKilled);
 	if (shipKilled) {
-		if (shipKilled == 1) userAndPCShips.user.singledeck -= 1;
-		else if (shipKilled == 2) userAndPCShips.user.doubledeck -= 1;
-		else if (shipKilled == 3) userAndPCShips.user.tripledeck -= 1;
-		else if (shipKilled == 4) userAndPCShips.user.fourdeck -= 1;
+		if (shipKilled == 1) numberOfShips[whoseShips].singledeck -= 1;
+		else if (shipKilled == 2) numberOfShips[whoseShips].doubledeck -= 1;
+		else if (shipKilled == 3) numberOfShips[whoseShips].tripledeck -= 1;
+		else if (shipKilled == 4) numberOfShips[whoseShips].fourdeck -= 1;
 	}
 	
-	getElement('.one p').textContent = userAndPCShips.user.singledeck;
-	getElement('.two p').textContent = userAndPCShips.user.doubledeck;
-	getElement('.three p').textContent = userAndPCShips.user.tripledeck;
-	getElement('.four p').textContent = userAndPCShips.user.fourdeck;
+	getElement('.one p.' + whoseShips).textContent = numberOfShips[whoseShips].singledeck;
+	getElement('.two p.' + whoseShips).textContent = numberOfShips[whoseShips].doubledeck;
+	getElement('.three p.' + whoseShips).textContent = numberOfShips[whoseShips].tripledeck;
+	getElement('.four p.' + whoseShips).textContent = numberOfShips[whoseShips].fourdeck;
 }
 
-updateNumberOfShips(userShips, 0)
+updateNumberOfShips(userAndPCShips, 'user', 0);
+updateNumberOfShips(userAndPCShips, 'pc', 0);
 
 // Чей ход
 let yourMove = false; 
@@ -446,8 +449,8 @@ let pcLogic = function() {
 			div.classList.add('knock');
 			// Добавление -30 !!! Ошибка в прорисовке. Исправить
 			// с -30 не попадает в 10 строку и в 10 столбец
-			div.style.left = 26 + 30 * coordX + 'px';
-			div.style.top = 26 + 30 * coordY + 'px';
+			div.style.left = 26 + 30 * coordX - 30 + 'px';
+			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
 
 			// !!! Смещение в прорисовке кораблей на 1 координату вправо вниз
@@ -457,7 +460,7 @@ let pcLogic = function() {
 						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
-							updateNumberOfShips(pcShips, pcShips[i].type);						
+							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);						
 						} 
 				} 			
 			}
@@ -467,8 +470,8 @@ let pcLogic = function() {
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
 			div.classList.add('dot');
-			div.style.left = 26 + 30 * coordX + 'px';
-			div.style.top = 26 + 30 * coordY + 'px';
+			div.style.left = 26 + 30 * coordX - 30 + 'px';
+			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
 		}
 
