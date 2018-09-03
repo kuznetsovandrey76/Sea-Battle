@@ -353,6 +353,11 @@ field.addEventListener('click', (e) => {
 			div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
 			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
 			field.appendChild(div); 
+			// Запуск хода противника
+			// setTimeout("game();", 1500);
+
+			// Передать ход PC
+			game('pc');
 		}
 	}
 
@@ -502,7 +507,8 @@ let pcLogic = function() {
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);						
 						} 
 				} 			
-			}			
+			}	
+			game('user');		
 		} 
 
 		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
@@ -511,21 +517,28 @@ let pcLogic = function() {
 			div.classList.add('dot');
 			div.style.left = 26 + 30 * coordX - 30 + 'px';
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
-			field.appendChild(div); 
+			field.appendChild(div);
+
+			// Передаем ход user'y 
+			game('pc');
 		}
 };
 
 
 
 // Логика игры
-let startGame = function() {
-	console.log(yourMove)
+let startGame = function(firstMove) {
+	// console.log(firstMove)
 	let field = document.querySelector('.battlefield');
 	let div = document.createElement('div');
 	div.classList.add('locked');
+
+	// yourMove - Берется из глобальной переменной
 	(yourMove) ? div.classList.add('locked-pc') : div.classList.add('locked-user');
-	// div.classList.add('locked-pc');
 	field.appendChild(div); 
+	// Если компьютер ходит первым запускаем его ход
+	// Если хожу я смотри field.addEventListener('click' ...
+	(firstMove == 'pc') ? game('pc') : '';
 };
 
 
@@ -543,27 +556,47 @@ let chooseFirstStepPlayer = document.querySelector('.popup__choose-first-move');
 yourNameButton.addEventListener('click', () => {
 	document.querySelector('.popup__your-name').classList.toggle('hidden');
 	document.querySelector('.popup__pc-name').classList.toggle('hidden');
-	console.log(`You: ${yourName.value}`);
+	// console.log(`You: ${yourName.value}`);
 });
 
 pcNameButton.addEventListener('click', () => {
 	document.querySelector('.popup__pc-name').classList.toggle('hidden');
 	document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
-	console.log(`Opponent: ${pcName.value}`);
+	// console.log(`Opponent: ${pcName.value}`);
 	document.querySelector('.popup__choose-you').value = yourName.value;
 	document.querySelector('.popup__choose-pc').value = pcName.value;
 });
 
 chooseFirstStepPlayer.addEventListener('click', (e) => {
 	if (e.target.value === yourName.value || e.target.value === pcName.value) {
-		console.log(`First step: ${e.target.value}`);
+		// console.log(`First step: ${e.target.value}`);
 		document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
 		document.querySelector('.field-user').classList.toggle('hidden');
 		document.querySelector('.field-pc').classList.toggle('hidden');
 		document.querySelector('.name-user').textContent = yourName.value;
 		document.querySelector('.name-pc').textContent = pcName.value;
-		startGame();
+
+		// Передаем кто будет делать первый ход
+		startGame(e.target.getAttribute('data-name'));
 	}
 });	
 
 
+let game = function(who) {
+	// console.log(who);
+	let locked = document.querySelector('.locked');
+	if (who == 'pc') {
+		console.log(1)
+		setTimeout(function () {
+			locked.classList.toggle('locked-pc');
+			locked.classList.toggle('locked-user');			
+			pcLogic()
+		}, 1000);		
+	} else 	if (who == 'user') {
+			locked.classList.toggle('locked-user');
+			locked.classList.toggle('locked-pc');
+	} else {
+		locked.classList.toggle('locked-user');
+		locked.classList.toggle('locked-pc');		
+	}
+};

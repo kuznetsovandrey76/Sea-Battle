@@ -4,11 +4,17 @@
 
 body {
 	z-index: -20;
-	position: relative; 
+	position: relative; 	
+}
 
+header {
+	text-align: center;
+	width: 100%;
+	margin-top: 10px;
+	font-size: 20px;
 	
 }
-/* всплывающие окна */
+
 .popup {
 	/*position: absolute;*/
 	width: 80%;	

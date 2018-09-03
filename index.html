@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>	
+	<header>Sea Battle</header>
 	<div class="popup popup__your-name">
 		<input class="popup__your-name--input" type="text" placeholder="Input your name:">
 		<input class="popup__your-name--button" type="submit" value="Send">
@@ -16,8 +17,8 @@
 	</div>
 	<div class="popup popup__choose-first-move hidden">
 		<p>choose whose first move:</p>					
-		<input class="popup__choose-you popup__choose" type="submit">
-		<input class="popup__choose-pc popup__choose" type="submit">
+		<input class="popup__choose-you popup__choose" data-name="user" type="submit">
+		<input class="popup__choose-pc popup__choose" data-name="pc" type="submit">
 	</div>
 
 	<div class="battlefield">
