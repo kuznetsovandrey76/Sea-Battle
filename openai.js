@@ -252,24 +252,10 @@ drawShips(pcShips, '.field-pc');
 let field = getElement('.field');
 
 // Отсюда берутся данные для отображения статистики
-let userAndPCShips = {
-	user: {
-		singledeck : 4,
-		doubledeck : 3,
-		tripledeck : 2,
-		fourdeck : 1
-	}, 
-	pc: {
-		singledeck : 4,
-		doubledeck : 3,
-		tripledeck : 2,
-		fourdeck : 1
-	} 
-};
 
 
 
-
+// Действия при нажатии левой кнопки по игровому полю 
 field.addEventListener('click', (e) => {
 	// 26px расстояние до внутреннего поля в playfield.png
 	if (e.offsetX - 26 > 2 && 
@@ -289,6 +275,7 @@ field.addEventListener('click', (e) => {
 		// 0 - мимо
 		// 1 - попал
 		// 2 - мимо / обводка корабля
+		// Действия при ПОПАДАНИИ по кораблю 
 		if (matrixUser[coordY - 1][coordX - 1] == 1) {
 			let field = document.querySelector('.field-user');
 			let div = document.createElement('div');
@@ -304,8 +291,9 @@ field.addEventListener('click', (e) => {
 						// Заменяю координату палубы в которую попали на 0
 						userShips[i].coordArr[(userShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
-						(!(parseInt((userShips[i].coordArr).join('')))) ? 
-							console.log(userShips[i].type, 'kill') : '';
+						if (!(parseInt((userShips[i].coordArr).join('')))) {
+							updateNumberOfShips(userShips, userShips[i].type);						
+						} 
 							// !!!
 				} 			
 			}
@@ -323,13 +311,14 @@ field.addEventListener('click', (e) => {
 
 });
 
+// Действия при нажатии правой кнопки по игровому полю 
 field.addEventListener('contextmenu', e => {
 	e.preventDefault();
 		if (e.offsetX - 26 > 2 && 
 		e.offsetX - 26 < 300 &&
 		e.offsetY - 26 > 2 &&
 		e.offsetY - 26 < 300) {
-			// console.log(1)
+
 			let coordX = Math.ceil((e.offsetX - 26) / 30);
 			let coordY = Math.ceil((e.offsetY - 26) / 30);
 		if (matrixUser[coordY - 1][coordX - 1] != 1) {
@@ -367,3 +356,35 @@ toStringCoordShip(userShips);
 toStringCoordShip(pcShips);
 
 // Добавить алгоритм выстрелов PC
+
+let userAndPCShips = {
+	user: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	}, 
+	pc: {
+		singledeck : 4,
+		doubledeck : 3,
+		tripledeck : 2,
+		fourdeck : 1
+	} 
+};
+
+let updateNumberOfShips = function (whoseShips, shipKilled) {
+	console.log(whoseShips);
+	if (shipKilled) {
+		if (shipKilled == 1) userAndPCShips.user.singledeck -= 1;
+		else if (shipKilled == 2) userAndPCShips.user.doubledeck -= 1;
+		else if (shipKilled == 3) userAndPCShips.user.tripledeck -= 1;
+		else if (shipKilled == 4) userAndPCShips.user.fourdeck -= 1;
+	}
+	
+	getElement('.one p').textContent = userAndPCShips.user.singledeck;
+	getElement('.two p').textContent = userAndPCShips.user.doubledeck;
+	getElement('.three p').textContent = userAndPCShips.user.tripledeck;
+	getElement('.four p').textContent = userAndPCShips.user.fourdeck;
+}
+
+updateNumberOfShips(userShips, 0)

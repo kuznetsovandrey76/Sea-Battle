@@ -67,6 +67,16 @@
 	background-position: 0 -60px;
 }
 
+.one p,
+.two p,
+.three p,
+.four p {
+	position: absolute;
+	top: 3px;
+	left: -15px;
+	font-size: 20px;
+}
+
 .two {
 	top: 327px;
 	left: 147px;
