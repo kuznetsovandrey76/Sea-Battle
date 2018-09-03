@@ -2,10 +2,15 @@
 	margin: 0;
 }
 
+body {
+	z-index: -20;
+	position: relative; 
+
+	
+}
 /* всплывающие окна */
 .popup {
 	/*position: absolute;*/
-	z-index: 3;
 	width: 80%;	
 	margin: 10px auto;
 	padding: 10px;
@@ -27,10 +32,15 @@
 	position: relative; 
 	margin: 0 auto;
 	background: url('img/grid.png') repeat;
-	/*z-index: -6*/
+	z-index: -10;
 }
 
 /* поле для морского боя */
+.field {
+	z-index: 1;
+	position: absolute;
+}
+
 .field-user {
 	width: 330px;
 	height: 330px;
@@ -38,7 +48,7 @@
 	top: 34px;
 	left: 34px;
 	background: url('img/playfield.png') no-repeat;
-	/*z-index: -2;*/
+	z-index: 1;
 }
 
 .field-pc {
@@ -121,7 +131,7 @@
 .ship {
 	/*background: url('img/sprite.png');*/
 	position: absolute;	
-	/*z-index: -3;*/
+	z-index: -5;
 }
 
 .knock {

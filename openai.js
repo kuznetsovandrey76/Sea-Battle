@@ -238,7 +238,7 @@ let drawShips = function(arr, user) {
 		div.style.height = height + 'px';
 		div.style.left = coordX + 'px';
 		div.style.top = coordY + 'px';
-		div.style.border = '2px solid purple';
+		div.style.border = '3px solid #5d0efb';
 		field.appendChild(div); 
 	}
 }
@@ -374,7 +374,7 @@ let userAndPCShips = {
 // Обновляет данные при нажатии правой кнопкой по игровому полю
 let updateNumberOfShips = function (whoseShips, shipKilled) {
 	// !!! Не обновляет данные если финальный выстрел по 10 столбцу
-	console.log(whoseShips);
+	// console.log(whoseShips);
 	if (shipKilled) {
 		if (shipKilled == 1) userAndPCShips.user.singledeck -= 1;
 		else if (shipKilled == 2) userAndPCShips.user.doubledeck -= 1;
@@ -397,6 +397,9 @@ getElement('.popup__choose-you').addEventListener('click', () => {
 });
 
 let pcLogic = function() {
+	let coordX = getRandom(10) + 1;
+	let coordY = getRandom(10) + 1;
+	console.log('step')
 	// после каждого хода изменять yourMove
 	// 1. Переделать в функцию действие по нажатию левой кнопки	
 
@@ -426,4 +429,51 @@ let pcLogic = function() {
 
 	// При попадании обстреливать область вокруг, горизонталь / вертикаль
 
+		// let coordX = Math.ceil((e.offsetX - 26) / 30);
+		// let coordY = Math.ceil((e.offsetY - 26) / 30);
+		// Координаты выстрела в виде строки, для взаимодействия с coordArr
+		// console.log('' + coordX + coordY);
+
+		// Проверка куда произведен выстрел
+		// 0 - мимо
+		// 1 - попал
+		// 2 - мимо / обводка корабля
+		// Действия при ПОПАДАНИИ по кораблю 
+
+		if (matrixPC[coordY - 1][coordX - 1] == 1) {
+			let field = document.querySelector('.field-pc');
+			let div = document.createElement('div');
+			div.classList.add('knock');
+			// Добавление -30 !!! Ошибка в прорисовке. Исправить
+			// с -30 не попадает в 10 строку и в 10 столбец
+			div.style.left = 26 + 30 * coordX + 'px';
+			div.style.top = 26 + 30 * coordY + 'px';
+			field.appendChild(div); 
+
+			// !!! Смещение в прорисовке кораблей на 1 координату вправо вниз
+			for(let i = 0; i < pcShips.length; i++) {
+					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
+						// Заменяю координату палубы в которую попали на 0
+						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
+						// Перевожу массив с координатами корабля в строку и сравниваю с 0
+						if (!(parseInt((pcShips[i].coordArr).join('')))) {
+							updateNumberOfShips(pcShips, pcShips[i].type);						
+						} 
+				} 			
+			}
+			
+		} 
+		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
+			let field = document.querySelector('.field-pc');
+			let div = document.createElement('div');
+			div.classList.add('dot');
+			div.style.left = 26 + 30 * coordX + 'px';
+			div.style.top = 26 + 30 * coordY + 'px';
+			field.appendChild(div); 
+		}
+
+
+};
+for (let i = 0; i < 1000; i++) {
+	pcLogic();
 }
