@@ -149,3 +149,19 @@ body {
 	background: url('img/sprite.png');
 	background-position: -360px -120px;
 } 
+.locked {
+	position: absolute;
+	width: 310px;
+	height: 310px;
+	background: rgba(123, 123, 43, .3);
+	z-index: 10;	
+	top: 55px;
+}
+
+.locked-user {
+	left: 55px;
+}
+
+.locked-pc {
+	left: 445px;
+}

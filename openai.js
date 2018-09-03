@@ -368,12 +368,13 @@ field.addEventListener('contextmenu', (e) => {
 
 
 
-// Добавляем в данные каждого корабля массив 
-// из координат каждой палубы в виде строки
+// Добавляем в данные каждого корабля массив со строковым предсиавлением его палуб
+// ships - отсюда берем координаты  
 let toStringCoordShip = function(ships) {
 	// Берем все корабли по очереди
 	for(let i = 0; i < ships.length; i++) {
 		ships[i].coordArr = [];
+
 		// В каждом корабле отталкиваемся от его типа
 		for(let j = 0; j < ships[i].type; j++) {
 		 	if (ships[i].direction) {
@@ -389,13 +390,16 @@ let toStringCoordShip = function(ships) {
 toStringCoordShip(userShips);
 toStringCoordShip(pcShips);
 
-// Добавить алгоритм выстрелов PC
 
 
-// Обновляет данные при нажатии правой кнопкой по игровому полю
+// Обновление данных при выстреле
+// numberOfShips - количество оставшихся живых кораблей
+// whoseShips - чей корабль 'user' или 'pc' 
+// !!! Изменяет содержимое index.html
+// shipKilled - тип убитого корабля
 let updateNumberOfShips = function (numberOfShips, whoseShips, shipKilled) {
 	// !!! Не обновляет данные если финальный выстрел по 10 столбцу
-	console.log(shipKilled);
+
 	if (shipKilled) {
 		if (shipKilled == 1) numberOfShips[whoseShips].singledeck -= 1;
 		else if (shipKilled == 2) numberOfShips[whoseShips].doubledeck -= 1;
@@ -412,8 +416,11 @@ let updateNumberOfShips = function (numberOfShips, whoseShips, shipKilled) {
 updateNumberOfShips(userAndPCShips, 'user', 0);
 updateNumberOfShips(userAndPCShips, 'pc', 0);
 
-// Чей ход
-let yourMove = false; 
+// Флаг - чей ход
+let yourMove = false;
+
+// Если при первоначальном выборе, говорю что хожу первым
+// изменяет флаг 
 getElement('.popup__choose-you').addEventListener('click', () => {
 	return yourMove = true;	
 });
@@ -421,21 +428,21 @@ getElement('.popup__choose-you').addEventListener('click', () => {
 // Место хранения координат по которым стрелял компьютер
 let pcShots = new Set();
 
+// Логика выстрелов компьютера
 let pcLogic = function() {
 
 	let coordX = getRandom(10) + 1;
 	let coordY = getRandom(10) + 1;
 	let coordString = '' + coordX + coordY
+
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
 	if (pcShots.has(coordString)) {
-		console.log(1);
 		pcLogic();
 	} else {
-		console.log(pcShots.has(coordString));
-		pcShots.add(coordString)
-		
+		pcShots.add(coordString);		
 	}
+
 	// после каждого хода изменять yourMove
 	// 1. Переделать в функцию действие по нажатию левой кнопки	
 
@@ -465,23 +472,11 @@ let pcLogic = function() {
 
 	// При попадании обстреливать область вокруг, горизонталь / вертикаль
 
-		// let coordX = Math.ceil((e.offsetX - 26) / 30);
-		// let coordY = Math.ceil((e.offsetY - 26) / 30);
-		// Координаты выстрела в виде строки, для взаимодействия с coordArr
-		// console.log('' + coordX + coordY);
-
-		// Проверка куда произведен выстрел
-		// 0 - мимо
-		// 1 - попал
-		// 2 - мимо / обводка корабля
-		// Действия при ПОПАДАНИИ по кораблю 
-
 		if (matrixPC[coordY - 1][coordX - 1] == 1) {
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
 			div.classList.add('knock');
-			// Добавление -30 !!! Ошибка в прорисовке. Исправить
-			// с -30 не попадает в 10 строку и в 10 столбец
+
 			div.style.left = 26 + 30 * coordX - 30 + 'px';
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
@@ -492,11 +487,6 @@ let pcLogic = function() {
 				// тоже и для у
 			// 3. когда убил переходить дальше
 
-			// необходимо запомнить все координаты выстрелов 
-
-
-
-			// !!! Смещение в прорисовке кораблей на 1 координату вправо вниз
 			for(let i = 0; i < pcShips.length; i++) {
 					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
 						// Заменяю координату палубы в которую попали на 0
@@ -506,9 +496,9 @@ let pcLogic = function() {
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);						
 						} 
 				} 			
-			}
-			
+			}			
 		} 
+
 		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
@@ -517,14 +507,19 @@ let pcLogic = function() {
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
 		}
-
-
 };
-for (let i = 0; i < 99; i++) {
-	pcLogic();
-}
 
+// for (let i = 0; i < 99; i++) {
+// 	pcLogic();
+// }
 
+// Логика игры
 let startGame = function() {
-
+	let field = document.querySelector('.battlefield');
+	let div = document.createElement('div');
+	div.classList.add('locked');
+	div.classList.add('locked-pc');
+	field.appendChild(div); 
 };
+
+startGame();
