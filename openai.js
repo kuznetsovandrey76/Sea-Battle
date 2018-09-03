@@ -294,7 +294,6 @@ field.addEventListener('click', (e) => {
 						if (!(parseInt((userShips[i].coordArr).join('')))) {
 							updateNumberOfShips(userShips, userShips[i].type);						
 						} 
-							// !!!
 				} 			
 			}
 			
@@ -372,7 +371,9 @@ let userAndPCShips = {
 	} 
 };
 
+// Обновляет данные при нажатии правой кнопкой по игровому полю
 let updateNumberOfShips = function (whoseShips, shipKilled) {
+	// !!! Не обновляет данные если финальный выстрел по 10 столбцу
 	console.log(whoseShips);
 	if (shipKilled) {
 		if (shipKilled == 1) userAndPCShips.user.singledeck -= 1;
@@ -388,3 +389,13 @@ let updateNumberOfShips = function (whoseShips, shipKilled) {
 }
 
 updateNumberOfShips(userShips, 0)
+
+// Чей ход
+let yourMove = false; 
+getElement('.popup__choose-you').addEventListener('click', () => {
+	return yourMove = true;	
+});
+
+let pcLogic = function() {
+	// после каждого хода изменять yourMove	
+}
