@@ -298,13 +298,15 @@ let userAndPCShips = {
 		singledeck : 4,
 		doubledeck : 3,
 		tripledeck : 2,
-		fourdeck : 1
+		fourdeck : 1,
+		total: 10
 	}, 
 	pc: {
 		singledeck : 4,
 		doubledeck : 3,
 		tripledeck : 2,
-		fourdeck : 1
+		fourdeck : 1,
+		total: 10
 	} 
 };
 
@@ -472,14 +474,13 @@ let pcLogic = function() {
 	let coordX = getRandom(10) + 1;
 	let coordY = getRandom(10) + 1;
 	let coordString = '' + coordX + coordY;
-
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
 	if (pcShots.has(coordString)) {
 		pcLogic();
+		console.log('test...')
 	} else {
-		pcShots.add(coordString);		
-	}
+		pcShots.add(coordString);
 
 	// после каждого хода изменять yourMove
 	// 1. Переделать в функцию действие по нажатию левой кнопки	
@@ -612,14 +613,16 @@ let pcLogic = function() {
 						
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
-							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);	
-							info('Что он творит!');					
+							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);
+							userAndPCShips.pc.total -= 1;	
+							(userAndPCShips.pc.total) ? info('Что он творит!') : info('Допрыгался! Game Over');
+							// info('Что он творит!');					
 						} 
 				} 			
 			}	
 
 			// Если PC попал, повторный запуск его хода
-			setTimeout("pcLogic();", 1200);					
+			(userAndPCShips.pc.total) ? setTimeout("pcLogic();", 1200) : '';					
 		} 
 
 		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
@@ -634,6 +637,10 @@ let pcLogic = function() {
 			info('Воин! Действуй')
 			game('user');
 		}
+	console.log(pcShots.size)
+				
+	}
+
 };
 
 
@@ -730,3 +737,6 @@ let game = function(who) {
 		}
 };
 
+let endGame = function() {
+	console.log('You lose')
+}
