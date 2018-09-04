@@ -508,7 +508,8 @@ let pcLogic = function() {
 						} 
 				} 			
 			}	
-			game('user');		
+			// Если PC попал, повторный запуск его хода
+			setTimeout("pcLogic();", 1200);					
 		} 
 
 		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
@@ -520,7 +521,7 @@ let pcLogic = function() {
 			field.appendChild(div);
 
 			// Передаем ход user'y 
-			game('pc');
+			game('user');
 		}
 };
 
@@ -583,20 +584,19 @@ chooseFirstStepPlayer.addEventListener('click', (e) => {
 
 
 let game = function(who) {
-	// console.log(who);
+
 	let locked = document.querySelector('.locked');
 	if (who == 'pc') {
-		console.log(1)
-		setTimeout(function () {
+			// Захожу сюда если промахнулся
+			// Захожу сюда если попал pc
 			locked.classList.toggle('locked-pc');
-			locked.classList.toggle('locked-user');			
-			pcLogic()
-		}, 1000);		
-	} else 	if (who == 'user') {
+			locked.classList.add('locked-user');
+			setTimeout("pcLogic();", 1200);		
+			}	
+	
+	if (who == 'user') {
+			// Захожу сюда если промахнулся PC
+			locked.classList.add('locked-pc')
 			locked.classList.toggle('locked-user');
-			locked.classList.toggle('locked-pc');
-	} else {
-		locked.classList.toggle('locked-user');
-		locked.classList.toggle('locked-pc');		
-	}
+		}
 };
