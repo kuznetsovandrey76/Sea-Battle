@@ -356,7 +356,7 @@ field.addEventListener('click', (e) => {
 						if (!(parseInt((userShips[i].coordArr).join('')))) {
 							// Обратит внимание userAndPCShips и userShips разные массивы
 							// !!! Разобраться с именами
-							info('Убил ')
+							info('Убил! Продолжай в том же духе')
 							updateNumberOfShips(userAndPCShips, 'user', userShips[i].type);						
 						} 
 				} 			
@@ -524,7 +524,8 @@ let pcLogic = function() {
 						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
-							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);						
+							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);	
+							info('Что он творит!');					
 						} 
 				} 			
 			}	
@@ -542,6 +543,7 @@ let pcLogic = function() {
 			field.appendChild(div);
 
 			// Передаем ход user'y 
+			info('Воин! Действуй')
 			game('user');
 		}
 };
