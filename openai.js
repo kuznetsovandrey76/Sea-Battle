@@ -359,7 +359,8 @@ field.addEventListener('click', (e) => {
 							// Обратит внимание userAndPCShips и userShips разные массивы
 							// !!! Разобраться с именами
 							info('Убил! Продолжай в том же духе')
-							updateNumberOfShips(userAndPCShips, 'user', userShips[i].type);						
+							updateNumberOfShips(userAndPCShips, 'user', userShips[i].type);	
+							userAndPCShips.user.total -= 1;					
 						} 
 				} 			
 			}			
@@ -379,8 +380,19 @@ field.addEventListener('click', (e) => {
 
 			// Передать ход PC
 			info('Ход PC');
-			game('pc');
+			game('pc');	
 		}
+	}
+	
+	if (!userAndPCShips.user.total) {
+		// Блокирую свое поле
+		// Вывод сообщения о победе
+		let field = document.querySelector('.battlefield');
+		let div = document.createElement('div');
+		div.classList.add('locked');
+		div.classList.add('locked-user');
+		field.appendChild(div); 
+		info('Yahoo! Вы победили');
 	}
 
 });
@@ -737,6 +749,3 @@ let game = function(who) {
 		}
 };
 
-let endGame = function() {
-	console.log('You lose')
-}
