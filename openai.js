@@ -270,6 +270,24 @@ drawShips(userShips, '.field-user');
 drawShips(pcShips, '.field-pc');
 
 
+// INFO
+
+// Вывод инофрмации о ходе игры
+// msg - передаем часть сообщения
+let info = function(msg) {
+	getElement('.info').textContent = msg;
+}
+
+let msgInfo = [
+	// Сообщение когда я начинаю первый
+	'Погнали. Твой ход',
+];
+
+
+
+
+
+
 // SHOT
 
 let field = getElement('.field');
@@ -324,6 +342,8 @@ field.addEventListener('click', (e) => {
 			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
 			field.appendChild(div); 
 
+			info('Есть пробитие ');
+
 			// При попадании, находим в какой тип корабля попал,
 			// изменяем данные в coordArr
 			for(let i = 0; i < userShips.length; i++) {
@@ -336,6 +356,7 @@ field.addEventListener('click', (e) => {
 						if (!(parseInt((userShips[i].coordArr).join('')))) {
 							// Обратит внимание userAndPCShips и userShips разные массивы
 							// !!! Разобраться с именами
+							info('Убил ')
 							updateNumberOfShips(userAndPCShips, 'user', userShips[i].type);						
 						} 
 				} 			
@@ -353,10 +374,9 @@ field.addEventListener('click', (e) => {
 			div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
 			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
 			field.appendChild(div); 
-			// Запуск хода противника
-			// setTimeout("game();", 1500);
 
 			// Передать ход PC
+			info('Ход PC');
 			game('pc');
 		}
 	}
@@ -508,6 +528,7 @@ let pcLogic = function() {
 						} 
 				} 			
 			}	
+
 			// Если PC попал, повторный запуск его хода
 			setTimeout("pcLogic();", 1200);					
 		} 
@@ -529,17 +550,18 @@ let pcLogic = function() {
 
 // Логика игры
 let startGame = function(firstMove) {
-	// console.log(firstMove)
 	let field = document.querySelector('.battlefield');
 	let div = document.createElement('div');
 	div.classList.add('locked');
 
 	// yourMove - Берется из глобальной переменной
 	(yourMove) ? div.classList.add('locked-pc') : div.classList.add('locked-user');
+	(yourMove) ? info(msgInfo[0]) : div.classList.add('locked-user');
 	field.appendChild(div); 
-	// Если компьютер ходит первым запускаем его ход
 	// Если хожу я смотри field.addEventListener('click' ...
-	(firstMove == 'pc') ? game('pc') : '';
+
+	// Если компьютер ходит первым запускаем его ход
+	(firstMove == 'pc') ? setTimeout("pcLogic();", 1200) : '';
 };
 
 
@@ -554,18 +576,30 @@ let pcNameButton = document.querySelector('.popup__pc-name--button');
 
 let chooseFirstStepPlayer = document.querySelector('.popup__choose-first-move');
 
+info('Введи свое имя');
+
 yourNameButton.addEventListener('click', () => {
-	document.querySelector('.popup__your-name').classList.toggle('hidden');
-	document.querySelector('.popup__pc-name').classList.toggle('hidden');
-	// console.log(`You: ${yourName.value}`);
+	// Проверить, введено ли имя User'a
+	// если введено запустить код
+	info('Боец! Ты забыл ввести свое имя... Исправь это!');
+	if (yourName.value) {
+		document.querySelector('.popup__your-name').classList.toggle('hidden');
+		document.querySelector('.popup__pc-name').classList.toggle('hidden');	
+		info('Введи имя своего противника');	
+	}
 });
 
 pcNameButton.addEventListener('click', () => {
-	document.querySelector('.popup__pc-name').classList.toggle('hidden');
-	document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
-	// console.log(`Opponent: ${pcName.value}`);
-	document.querySelector('.popup__choose-you').value = yourName.value;
-	document.querySelector('.popup__choose-pc').value = pcName.value;
+	// Проверить, введено ли имя PC
+	// если введено запустить код
+	info('ммм... Боец! Ты забыл ввести имя своего противника');
+	if (pcName.value) {
+		document.querySelector('.popup__pc-name').classList.toggle('hidden');
+		document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
+		document.querySelector('.popup__choose-you').value = yourName.value;
+		document.querySelector('.popup__choose-pc').value = pcName.value;
+		info('Выбирай кто ходит первым');
+	}
 });
 
 chooseFirstStepPlayer.addEventListener('click', (e) => {
@@ -578,10 +612,13 @@ chooseFirstStepPlayer.addEventListener('click', (e) => {
 		document.querySelector('.name-pc').textContent = pcName.value;
 
 		// Передаем кто будет делать первый ход
+		info('');
 		startGame(e.target.getAttribute('data-name'));
 	}
 });	
 
+
+// ПОРЯДОК ХОДОВ
 
 let game = function(who) {
 
@@ -591,6 +628,8 @@ let game = function(who) {
 			// Захожу сюда если попал pc
 			locked.classList.toggle('locked-pc');
 			locked.classList.add('locked-user');
+
+			// pcLogic() - Запуск хода PC / возможен в трех местах
 			setTimeout("pcLogic();", 1200);		
 			}	
 	
@@ -600,3 +639,4 @@ let game = function(who) {
 			locked.classList.toggle('locked-user');
 		}
 };
+
