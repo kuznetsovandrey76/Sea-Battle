@@ -572,20 +572,24 @@ let pcLogic = function() {
 								// Прорисовываем на поле заштрихованные области
 								// за исключение тех что лежат вне игрового поля
 								let field = document.querySelector('.field-pc');
-								let div = document.createElement('div');
-								div.classList.add('shade');								
-								div.style.left = 26 + 30 * diagonal[i][1] - 30 + 'px';
-								div.style.top = 26 + 30 * diagonal[i][0] - 30 + 'px';
-								// !!! Не закрашивать те по которым уже стреляли
-								field.appendChild(div); 
 
 								// Добавляем в pcShots диагональные значения 
 								let coordString = '' + diagonal[i][1] + diagonal[i][0];
-								(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';		
+
+								// Не закрашивать поля по которым уже стреляли 
+								if (!pcShots.has(coordString)) {
+									let div = document.createElement('div');
+									div.classList.add('shade');								
+									div.style.left = 26 + 30 * diagonal[i][1] - 30 + 'px';
+									div.style.top = 26 + 30 * diagonal[i][0] - 30 + 'px';
+									field.appendChild(div); 									
+								}	
+
+								(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
 							}
 
 									
-							}
+						}
 
 
 						// печать типа корабля в который попал
