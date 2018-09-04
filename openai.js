@@ -480,19 +480,91 @@ updateNumberOfShips(userAndPCShips, 'pc', 0);
 // Место хранения координат по которым стрелял компьютер
 let pcShots = new Set();
 
+// Временная переменная, сохранять координаты кораблей в которые попал но еще не убил
+let tempNotKilled = {
+	coord: [],
+	direction: undefined
+};
+
+
 // Логика выстрелов компьютера
 let pcLogic = function() {
 
-	let coordX = getRandom(10) + 1;
-	let coordY = getRandom(10) + 1;
-	let coordString = '' + coordX + coordY;
+	// Необходима проверка временной переменной
+	// Если до этого было попадание, обстреливаем область вокруг
+	let coordString, coordX, coordY;
+	if (!tempNotKilled.coord.length) {
+		coordX = getRandom(10) + 1;
+		coordY = getRandom(10) + 1;
+		coordString = '' + coordX + coordY;
+	} else {
+		// Работа с двухпалубными кораблями
+		if (tempNotKilled.coord.length == 1) {
+			coordX = tempNotKilled.coord[0][1]
+			coordY = tempNotKilled.coord[0][0]
+			// Переменная для записи координат возможных вторых выстрелов
+			let nextShots;
+			// Возможные координаты в зависимости от места попадания в первую палубу
+			if (coordX == 1) {
+				nextShots = [[coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];				
+			} else if (coordX == 10) {
+				nextShots = [[coordY, coordX - 1], [coordY - 1, coordX], [coordY + 1, coordX]];				
+			} else if (coordY == 1) {
+				nextShots = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY + 1, coordX]];
+			} else if (coordY == 10) {
+				nextShots = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX]];
+			} else if (coordX == 1 && coordY == 1) {
+				nextShots = [[coordY, coordX + 1], [coordY + 1, coordX]];
+			} else if (coordX == 1 && coordY == 10) {
+				nextShots = [[coordY, coordX + 1], [coordY - 1, coordX]];
+			} else if (coordX == 10 && coordY == 1) {
+				nextShots = [[coordY, coordX - 1], [coordY + 1, coordX]];
+			} else if (coordX == 10 && coordY == 10) {
+				nextShots = [[coordY, coordX - 1], [coordY - 1, coordX]];
+			} else {
+				nextShots = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];
+				
+			}
+			console.log(nextShots)
+			let temp = getRandom(nextShots.length);
+			coordX = nextShots[temp][0];
+			coordY = nextShots[temp][1];
+			console.log(coordX, coordY)
+			coordString = '' + coordX + coordY;
+		} 
+		// Работа с трехпалубными кораблями
+		if (tempNotKilled.coord.length == 2) {
+			// по координатам определить направление корабля
+
+		}
+				
+		// необходимо создать координату в окрестности точки попадания
+		// отталкиваемся от длины tempNotKilled
+
+		// 1 - горизонтально / Х
+		// 2 - вертикально / У
+		// let direction = getRandom(2);
+		// if (tempNotKilled.coord.length == 1 && direction) {
+		// 	tempNotKilled.direction = direction;			
+		// } 
+
+		// let tempShots = {
+		// 	coordY: [coordX - 1, coordX + 1, coordX - 2, coordX + 2, coordX - 3, coordX + 3],
+		// 	coordX: [coordY - 1, coordY + 1, coordY - 2, coordY + 2, coordY - 3, coordY + 3]
+		// }		
+	}
+	console.log(coordString)
+
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
 	if (pcShots.has(coordString)) {
 		pcLogic();
 		console.log('test...')
+	// Если нет добавляем в множество pcShots новое значение 
 	} else {
+		// Координаты по которым стрелял компьютер
 		pcShots.add(coordString);
+
 
 	// после каждого хода изменять yourMove
 	// 1. Переделать в функцию действие по нажатию левой кнопки	
@@ -522,16 +594,18 @@ let pcLogic = function() {
 	// 3. Рандомный ход
 
 	// При попадании обстреливать область вокруг, горизонталь / вертикаль
-
+		// Действия при Попадании в корабль User'a
 		if (matrixPC[coordY - 1][coordX - 1] == 1) {
-			// Обводка диагоналей
-			// Дополнительная 1 для корректного заполнения матрицы
+
+			// Временная переменная с координатами последнего попадания
+			tempNotKilled.coord.push([coordX, coordY]);
+			console.log(tempNotKilled.coord)	
+
+			// [вспомогательная] Обводка диагоналей
 			let diagonal = [[coordY - 1, coordX - 1], [coordY + 1, coordX - 1], [coordY - 1, coordX + 1], [coordY + 1, coordX + 1]];
-			// Координаты по которым надо стрелять с учетом сдвига влево-вверх
-			// Иду по Х
+
+
 			// если попал сюда все У удаляются
-			// [coordY, coordX-1]
-			// [coordY, coordX+1]
 			// =============
 			// [coordY, coordX-2]
 			// [coordY, coordX+2]
@@ -539,8 +613,6 @@ let pcLogic = function() {
 			// [coordY, coordX+3]
 			// Иду по У
 			// если попал сюда все X удаляются
-			// [coordY-1, coordX]
-			// [coordY+1, coordX]
 			// =============
 			// [coordY-2, coordX]
 			// [coordY+2, coordX]
@@ -561,7 +633,6 @@ let pcLogic = function() {
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
 			div.classList.add('knock');
-
 			div.style.left = 26 + 30 * coordX - 30 + 'px';
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
@@ -572,24 +643,30 @@ let pcLogic = function() {
 				// тоже и для у
 			// 3. когда убил переходить дальше
 
+			// Ищу через coordArr какому кораблю принадлежат координаты попадания 
 			for(let i = 0; i < pcShips.length; i++) {
 					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
+
 						// Заменяю координату палубы в которую попали на 0
 						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
+						
 						info('Кажется тебя ранили!');
-						// Заштриховываем область по диагонали 
+
+						// Заштриховываем область по диагоналям координаты попадания 
 						for (let i = 0; i < diagonal.length; i++ ) {
+
+							// Прорисовываем на поле заштрихованные области
+							// за исключение тех что лежат вне игрового поля
 							if (diagonal[i][1] < 11 && diagonal[i][0] < 11 && 
 									diagonal[i][1] > 0 && diagonal[i][0] > 0) {
 								
-								// Прорисовываем на поле заштрихованные области
-								// за исключение тех что лежат вне игрового поля
 								let field = document.querySelector('.field-pc');
 
 								// Добавляем в pcShots диагональные значения 
+								// Чтобы не стрелять повторно в заштрихованную область
 								let coordString = '' + diagonal[i][1] + diagonal[i][0];
 
-								// Не закрашивать поля по которым уже стреляли 
+								// Не заштриховывать поля по которым уже стреляли 
 								if (!pcShots.has(coordString)) {
 									let div = document.createElement('div');
 									div.classList.add('shade');								
@@ -597,11 +674,8 @@ let pcLogic = function() {
 									div.style.top = 26 + 30 * diagonal[i][0] - 30 + 'px';
 									field.appendChild(div); 									
 								}	
-
 								(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
-							}
-
-									
+							}									
 						}
 
 
@@ -623,20 +697,28 @@ let pcLogic = function() {
 
 						// }
 						
-						// Перевожу массив с координатами корабля в строку и сравниваю с 0
+						// Действия при Убийстве корабле
+						// Перевожу массив coordArr с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
+
+							// Сбрасываю временную переменную
+							tempNotKilled.coord = [];
+
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);
+							// Убавить общее количество кораблей
 							userAndPCShips.pc.total -= 1;	
 							(userAndPCShips.pc.total) ? info('Что он творит!') : info('Допрыгался! Game Over');
-							// info('Что он творит!');					
 						} 
 				} 			
 			}	
-
+			console.log(coordX, coordY);
 			// Если PC попал, повторный запуск его хода
+			// Когда все корабли User'a убиты, прекратить игру / не вызывать pcLogic()
+			// Передаю coordY и coordX для определения направления корабля
 			(userAndPCShips.pc.total) ? setTimeout("pcLogic();", 1200) : '';					
 		} 
 
+		// Действия при Промахе 
 		if (matrixPC[coordY - 1][coordX - 1] == 0 || matrixPC[coordY - 1][coordX - 1] == 2) {
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
@@ -645,16 +727,13 @@ let pcLogic = function() {
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div);
 
-			// Передаем ход user'y 
+			// Передаем ход User'y 
 			info('Воин! Действуй')
 			game('user');
 		}
-	console.log(pcShots.size)
 				
 	}
-
 };
-
 
 
 // Логика игры
