@@ -471,7 +471,7 @@ let pcLogic = function() {
 
 	let coordX = getRandom(10) + 1;
 	let coordY = getRandom(10) + 1;
-	let coordString = '' + coordX + coordY
+	let coordString = '' + coordX + coordY;
 
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
@@ -511,6 +511,40 @@ let pcLogic = function() {
 	// При попадании обстреливать область вокруг, горизонталь / вертикаль
 
 		if (matrixPC[coordY - 1][coordX - 1] == 1) {
+			// Обводка диагоналей
+			// Дополнительная 1 для корректного заполнения матрицы
+			let diagonal = [[coordY - 1, coordX - 1], [coordY + 1, coordX - 1], [coordY - 1, coordX + 1], [coordY + 1, coordX + 1]];
+			// Координаты по которым надо стрелять с учетом сдвига влево-вверх
+			// Иду по Х
+			// если попал сюда все У удаляются
+			// [coordY, coordX-1]
+			// [coordY, coordX+1]
+			// =============
+			// [coordY, coordX-2]
+			// [coordY, coordX+2]
+			// [coordY, coordX-3]
+			// [coordY, coordX+3]
+			// Иду по У
+			// если попал сюда все X удаляются
+			// [coordY-1, coordX]
+			// [coordY+1, coordX]
+			// =============
+			// [coordY-2, coordX]
+			// [coordY+2, coordX]
+			// [coordY-3, coordX]
+			// [coordY+3, coordX]
+
+			// classList.add('shade')
+			// console.log((coordX + 1) - 1, (coordY) - 1);
+			// console.log((coordX - 1) - 1, (coordY) - 1);
+			// console.log((coordX) - 1, (coordY + 1) - 1);
+			// console.log((coordX) - 1, (coordY -1 ) - 1);
+
+			// Запомнить координаты попадания, проверить не было ли выстрела до этого
+			// Заштриховать если возможно координаты по диагоналям
+			// Выбрать куда стрелять, горизонталь / вертикаль
+			// Обстреливать область по горизонтали / вертикали
+
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
 			div.classList.add('knock');
@@ -529,6 +563,49 @@ let pcLogic = function() {
 					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
 						// Заменяю координату палубы в которую попали на 0
 						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
+						info('Кажется тебя ранили!');
+						// Заштриховываем область по диагонали 
+						for (let i = 0; i < diagonal.length; i++ ) {
+							if (diagonal[i][1] < 11 && diagonal[i][0] < 11 && 
+									diagonal[i][1] > 0 && diagonal[i][0] > 0) {
+								
+								// Прорисовываем на поле заштрихованные области
+								// за исключение тех что лежат вне игрового поля
+								let field = document.querySelector('.field-pc');
+								let div = document.createElement('div');
+								div.classList.add('shade');								
+								div.style.left = 26 + 30 * diagonal[i][1] - 30 + 'px';
+								div.style.top = 26 + 30 * diagonal[i][0] - 30 + 'px';
+								// !!! Не закрашивать те по которым уже стреляли
+								field.appendChild(div); 
+
+								// Добавляем в pcShots диагональные значения 
+								let coordString = '' + diagonal[i][1] + diagonal[i][0];
+								(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';		
+							}
+
+									
+							}
+
+
+						// печать типа корабля в который попал
+						// console.log(pcShips[i].type);
+						// if (pcShips[i].type == 1) {
+						// 	console.log('single')
+						// 	// проставить заштрихованную область вокруг корабля
+						// 	// for (let i = 0; i < 8; i++ ) {
+						// 		// let field = document.querySelector('.field-user');
+						// 		// let div = document.createElement('div');
+						// 		// div.classList.add('shade');								
+						// 	// }
+						// } else if (pcShips[i].type == 2) {
+
+						// } else if (pcShips[i].type == 3) {
+
+						// } else if (pcShips[i].type == 4) {
+
+						// }
+						
 						// Перевожу массив с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);	
