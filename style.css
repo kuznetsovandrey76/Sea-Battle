@@ -132,15 +132,15 @@ header {
 .name-user, 
 .name-pc {
 	position: absolute;
-	top: 5px;
+	top: 2px;
 }
 
 .name-user {
-	left: 185px;	
+	left: 180px;	
 }
 
 .name-pc {
-	left: 575px;	
+	left: 570px;	
 }
 
 .ship {
@@ -192,4 +192,10 @@ header {
 	
 
 	
+}
+
+.input-name {
+	font-size: 24px;
+	background: white;
+	padding: 0 5px;
 }

@@ -385,22 +385,29 @@ field.addEventListener('click', (e) => {
 
 // Действия при нажатии User'a правой кнопки по игровому полю 
 field.addEventListener('contextmenu', (e) => {
+	// Убираем значение по умолчанию
 	e.preventDefault();
-		if (e.offsetX - 26 > 2 && 
-		e.offsetX - 26 < 300 &&
-		e.offsetY - 26 > 2 &&
-		e.offsetY - 26 < 300) {
+	
+	// Убираем ранее добавленный shade
+	if (e.target.classList.value == 'shade') {
+		e.target.classList.add('hidden');
+	}
 
-			let coordX = Math.ceil((e.offsetX - 26) / 30);
-			let coordY = Math.ceil((e.offsetY - 26) / 30);
-		if (matrixUser[coordY - 1][coordX - 1] != 1) {
-			let field = document.querySelector('.field-user');
-			let div = document.createElement('div');
-			div.classList.add('shade');
-			div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
-			div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
-			field.appendChild(div); 
-		}
+	if (e.offsetX - 26 > 2 && 
+	e.offsetX - 26 < 300 &&
+	e.offsetY - 26 > 2 &&
+	e.offsetY - 26 < 300) {
+
+		let coordX = Math.ceil((e.offsetX - 26) / 30);
+		let coordY = Math.ceil((e.offsetY - 26) / 30);
+	// if (matrixUser[coordY - 1][coordX - 1] != 1) {
+		let field = document.querySelector('.field-user');
+		let div = document.createElement('div');
+		div.classList.add('shade');
+		div.style.left = 26 + 30 * Math.floor((e.offsetX - 26) / 30) + 'px';
+		div.style.top = 26 + 30 * Math.floor((e.offsetY - 26) / 30) + 'px';
+		field.appendChild(div); 
+	// }
 	}
 });
 
