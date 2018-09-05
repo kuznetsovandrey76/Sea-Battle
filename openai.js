@@ -536,7 +536,7 @@ let pcLogic = function() {
 
 		// Работа с трехпалубными кораблями
 		if (tempNotKilled.coord.length == 2) {
-				console.log('трехпалубник')
+				// console.log('трехпалубник')
 				// Отталкиваемся от координат второго корабля 
 				coordX = tempNotKilled.coord[1][1]
 				coordY = tempNotKilled.coord[1][0]
@@ -546,49 +546,60 @@ let pcLogic = function() {
 			// 0 - вертикальное
 			tempNotKilled.direction = (tempNotKilled.coord[0][0]-tempNotKilled.coord[1][0]) ? 1 : 0;
 			// Если расположение горизонтальное
-			if (!tempNotKilled.direction) {
+			if (tempNotKilled.direction) {
 				// Вторая палуба слева от первой
+				console.log(1, tempNotKilled, tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0])
 				if (tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0] == -1) {
+					// console.log('слева')
 					if (coordX == 1) {
-						nextShots = [[coordY, coordX + 2]];				
+						nextShots = [[coordY + 2, coordX]];				
 					} else if (coordX == 9) {
-						nextShots = [[coordY, coordX - 1]];
+						nextShots = [[coordY - 1, coordX]];
 					} else {
-						nextShots = [[coordY, coordX - 1], [coordY, coordX + 2]];
+						nextShots = [[coordY - 1, coordX], [coordY + 2, coordX]];
 					}
-				// Вторая палуба справа от первой
+					console.log('слева', nextShots, coordX, coordY)
+				// Вторая палуба справа от первой - done
 				} else {
+					// console.log('справа')
 					if (coordX == 2) {
 						// Левая граница
-						nextShots = [[coordY, coordX + 1]];	
+						nextShots = [[coordY + 1, coordX]];	
 						// Правая граница 
 					} else if (coordX == 10) {
-						nextShots = [[coordY, coordX - 2]];
+						nextShots = [[coordY - 2, coordX]];
 					} else {
-						nextShots = [[coordY, coordX - 2], [coordY, coordX + 1]];
+						nextShots = [[coordY - 2, coordX], [coordY + 1, coordX]];
 					}
+					console.log('справа', nextShots, coordX, coordY)
 				} 
 
 				// Если расположение по вертикали
+				// !!! Работает с горизонтальными кораблями 
 			} else {
 				// Вторая палуба над первой
+				console.log(2, tempNotKilled, tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1])
 				if (tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1] == -1) {
+					// console.log('над')
 					if (coordY == 1) {
-						nextShots = [[coordY + 2, coordX]];				
+						nextShots = [[coordY, coordX + 2]];				
 					} else if (coordY == 9) {
-						nextShots = [[coordY - 1, coordX]];
+						nextShots = [[coordY, coordX - 1]];
 					} else {
-						nextShots = [[coordY + 2, coordX], [coordY - 1, coordX]];
+						nextShots = [[coordY, coordX + 2], [coordY, coordX - 1]];
 					}
-				// Вторая палуба под первой
+					console.log('над', nextShots, coordX, coordY)
+				// Вторая палуба под первой - done
 				} else {
+					// console.log('под')
 					if (coordY == 2) {
-						nextShots = [[coordY + 1, coordX]];	
+						nextShots = [[coordY, coordX + 1]];	
 					} else if (coordY == 10) {
-						nextShots = [[coordY - 2, coordX]];
+						nextShots = [[coordY, coordX - 2]];
 					} else {
-						nextShots = [[coordY + 1, coordX], [coordY - 2, coordX]];
+						nextShots = [[coordY, coordX + 1], [coordY, coordX - 2]];
 					}
+					console.log('под', nextShots, coordX, coordY)
 				} 
 			}
 			console.log(nextShots)
@@ -818,6 +829,7 @@ let pcLogic = function() {
 
 							// Сбрасываю временную переменную
 							tempNotKilled.coord = [];
+							// !!! когда убил заштриховать оставшиеся боковые области
 
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);
 							// Убавить общее количество кораблей
