@@ -7,6 +7,11 @@ body
 	position: relative;
 	z-index: -20;
 }
+footer {
+	margin: 10px;
+	text-align: center;
+	width: 100%;
+}
 header
 {
 	font-size: 20px;
@@ -158,6 +163,9 @@ header
 	position: absolute;
 	width: 30px;
 }
+.link {
+	text-decoration: none;
+}
 .locked
 {
 	background: rgba(123, 123, 43, .3);
@@ -190,4 +198,7 @@ header
 	background: white;
 	font-size: 24px;
 	padding: 0 5px;
+}
+.help {
+	color: darkred;
 }
