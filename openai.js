@@ -561,7 +561,6 @@ let pcLogic = function() {
 					// console.log('слева', nextShots, coordX, coordY)
 				// Вторая палуба справа от первой - done
 				} else {
-					// console.log('справа')
 					// !!! Сменить на У , проблемы на нижнем крае
 					if (coordX == 2) {
 						// Левая граница
@@ -590,6 +589,7 @@ let pcLogic = function() {
 						nextShots = [[coordY, coordX + 2], [coordY, coordX - 1]];
 					}
 					// console.log('над', nextShots, coordX, coordY)
+
 				// Вторая палуба под первой - done
 				} else {
 					// console.log('под')
@@ -681,8 +681,6 @@ let pcLogic = function() {
 
 			// [вспомогательная] Обводка диагоналей
 			let diagonal = [[coordY - 1, coordX - 1], [coordY + 1, coordX - 1], [coordY - 1, coordX + 1], [coordY + 1, coordX + 1]];
-			// [вспомогательная] Обводка боковых полей, убитых кораблей 
-			let neighbourhood = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];
 
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
@@ -732,35 +730,48 @@ let pcLogic = function() {
 
 							// !!! когда убил заштриховать оставшиеся боковые области
 							// Заштриховываем область по диагоналям координаты попадания 
+							for (let j = 0; j < tempNotKilled.coord.length; j++) {
+								console.log(1, '' + tempNotKilled.coord[j][0] + tempNotKilled.coord[j][1])
+								// Прокрутить координаты каждой палубы
+								let coordY = tempNotKilled.coord[j][1];
+								let coordX = tempNotKilled.coord[j][0];
+								// let decks = '' + tempNotKilled.coord[j][0] + tempNotKilled.coord[j][1];
 
-							// Обработка четырех направлений одной координаты
-							for (let i = 0; i < 4; i++ ) {
-								// необходима проверка обрисовки первой координаты
 
-								console.log(tempNotKilled.coord.length)
-								// Прорисовываем на поле заштрихованные области
-								// за исключение тех что лежат вне игрового поля
-								if (neighbourhood[i][1] < 11 && neighbourhood[i][0] < 11 && 
-										neighbourhood[i][1] > 0 && neighbourhood[i][0] > 0) {
-									
-									let field = document.querySelector('.field-pc');
+								// [вспомогательная] Обводка боковых полей, убитых кораблей 
+								let neighbourhood = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];
+							
 
-									// Добавляем в pcShots диагональные значения 
-									// Чтобы не стрелять повторно в заштрихованную область
-									let coordString = '' + neighbourhood[i][1] + neighbourhood[i][0];
-									console.log(coordString)
+								// Обработка четырех направлений одной координаты
+								for (let i = 0; i < 4; i++ ) {
+									// !!! необходима проверка обрисовки первой координаты
 
-									// Не заштриховывать поля по которым уже стреляли 
-									if (!pcShots.has(coordString)) {
-										let div = document.createElement('div');
-										div.classList.add('shade');								
-										div.style.left = 26 + 30 * neighbourhood[i][1] - 30 + 'px';
-										div.style.top = 26 + 30 * neighbourhood[i][0] - 30 + 'px';
-										field.appendChild(div); 									
-									}	
-									(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
-								}									
+									// Прорисовываем на поле заштрихованные области
+									// за исключение тех что лежат вне игрового поля
+									if (neighbourhood[i][1] < 11 && neighbourhood[i][0] < 11 && 
+											neighbourhood[i][1] > 0 && neighbourhood[i][0] > 0) {
+										
+										let field = document.querySelector('.field-pc');
+
+										// Добавляем в pcShots диагональные значения 
+										// Чтобы не стрелять повторно в заштрихованную область
+										let coordString = '' + neighbourhood[i][1] + neighbourhood[i][0];
+										console.log(2, coordString)
+
+										// Не заштриховывать поля по которым уже стреляли 
+										if (!pcShots.has(coordString)) {
+											let div = document.createElement('div');
+											div.classList.add('shade');								
+											div.style.left = 26 + 30 * neighbourhood[i][1] - 30 + 'px';
+											div.style.top = 26 + 30 * neighbourhood[i][0] - 30 + 'px';
+											field.appendChild(div); 									
+										}	
+										(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
+									}									
+								}
 							}
+
+							
 							// shade
 							console.log('++++++++++++++')	
 
