@@ -497,6 +497,7 @@ let pcLogic = function() {
 		coordX = getRandom(10) + 1;
 		coordY = getRandom(10) + 1;
 		coordString = '' + coordX + coordY;
+
 	} else {
 		// Работа с двухпалубными кораблями
 		if (tempNotKilled.coord.length == 1) {
@@ -532,6 +533,7 @@ let pcLogic = function() {
 			console.log(coordX, coordY)
 			coordString = '' + coordX + coordY;
 		} 
+
 		// Работа с трехпалубными кораблями
 		if (tempNotKilled.coord.length == 2) {
 				console.log('трехпалубник')
@@ -597,9 +599,59 @@ let pcLogic = function() {
 			coordString = '' + coordX + coordY;
 
 		}
+
 		// Работа с четырехпалубным кораблем
-		if (tempNotKilled.coord.length == 3) {
+		if (tempNotKilled.coord.length == 3) 	{
+			console.log('четырехпалубник')
+				// Отталкиваемся от координат второго корабля 
+				// coordX = tempNotKilled.coord[1][1]
+				// coordY = tempNotKilled.coord[1][0]				
+				coordX;
+				coordY;			
+				let nextShots;
+			// по уже имеющимся координатам определить направление корабля
+			// 1 - горизонтальное
+			// 0 - вертикальное
+			// tempNotKilled.direction = (tempNotKilled.coord[0][0]-tempNotKilled.coord[1][0]) ? 1 : 0;
+			
+			// Если расположение горизонтальное
+			if (tempNotKilled.direction) {
+				// coordY - постоянная
+				coordY = tempNotKilled.coord[0][1]
+				// отталкиваемся от центральной палубы
+				coordX = (tempNotKilled.coord[0][0] + tempNotKilled.coord[1][0] + tempNotKilled.coord[2][0])/3;
+				if (coordX - 1 == 1) {
+					nextShots = [[coordX + 2, coordY]];					
+				} else if (coordX + 1 == 10) {
+					nextShots = [[coordX - 2, coordY]];
+				} else {
+					nextShots = [[coordX + 2, coordY], [coordX - 2, coordY]];
+				}
+
+				// coordX = tempNotKilled.coord[1][1]
+				// coordY = tempNotKilled.coord[1][0]				
+
+			// Если расположение вертикальное
+		} else {
+				// coordX - постоянная
+				coordX = tempNotKilled.coord[0][0]
+				// отталкиваемся от центральной палубы
+				coordY = (tempNotKilled.coord[0][1] + tempNotKilled.coord[1][1] + tempNotKilled.coord[2][1])/3;
+				if (coordY - 1 == 1) {
+					nextShots = [[coordX, coordY + 2]];					
+				} else if (coordY + 1 == 10) {
+					nextShots = [[coordX, coordY - 2]];
+				} else {
+					nextShots = [[coordX, coordY + 2], [coordX, coordY - 2]];
+				}
+
 		}
+			console.log(nextShots)
+			let temp = getRandom(nextShots.length);
+			coordX = nextShots[temp][0];
+			coordY = nextShots[temp][1];
+			console.log(coordX, coordY)
+			coordString = '' + coordX + coordY;
 				
 		// необходимо создать координату в окрестности точки попадания
 		// отталкиваемся от длины tempNotKilled
@@ -615,9 +667,9 @@ let pcLogic = function() {
 		// 	coordY: [coordX - 1, coordX + 1, coordX - 2, coordX + 2, coordX - 3, coordX + 3],
 		// 	coordX: [coordY - 1, coordY + 1, coordY - 2, coordY + 2, coordY - 3, coordY + 3]
 		// }		
-	}
+		}
 	// console.log(coordString)
-
+	}
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
 	if (pcShots.has(coordString)) {
