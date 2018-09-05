@@ -17,6 +17,9 @@ let getRandom = function(n) {
 // Флаг - чей ход
 let yourMove = false;
 
+// Время обдумывания компьютером
+let timePcThink = 100;
+
 // Если при первоначальном выборе, говорю что хожу первым
 // изменяет флаг 
 getElement('.popup__choose-you').addEventListener('click', function () {
@@ -562,11 +565,11 @@ let pcLogic = function() {
 				// Вторая палуба справа от первой - done
 				} else {
 					// !!! Сменить на У , проблемы на нижнем крае
-					if (coordX == 2) {
+					if (coordY == 2) {
 						// Левая граница
 						nextShots = [[coordY + 1, coordX]];	
 						// Правая граница 
-					} else if (coordX == 10) {
+					} else if (coordY == 10) {
 						nextShots = [[coordY - 2, coordX]];
 					} else {
 						nextShots = [[coordY - 2, coordX], [coordY + 1, coordX]];
@@ -581,8 +584,11 @@ let pcLogic = function() {
 				// console.log(2, tempNotKilled, tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1])
 				if (tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1] == -1) {
 					// console.log('над')
+					// X->Y
 					if (coordY == 1) {
 						nextShots = [[coordY, coordX + 2]];				
+					
+					// X->Y
 					} else if (coordY == 9) {
 						nextShots = [[coordY, coordX - 1]];
 					} else {
@@ -691,7 +697,7 @@ let pcLogic = function() {
 
 			// Ищу через coordArr какому кораблю принадлежат координаты попадания 
 			for(let i = 0; i < pcShips.length; i++) {
-					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {
+					if ((pcShips[i].coordArr).indexOf('' + coordX + coordY) != -1) {	
 
 						// Заменяю координату палубы в которую попали на 0
 						pcShips[i].coordArr[(pcShips[i].coordArr).indexOf('' + coordX + coordY)] = 0; 
@@ -789,7 +795,7 @@ let pcLogic = function() {
 			// Если PC попал, повторный запуск его хода
 			// Когда все корабли User'a убиты, прекратить игру / не вызывать pcLogic()
 			// Передаю coordY и coordX для определения направления корабля
-			(userAndPCShips.pc.total) ? setTimeout("pcLogic();", 1200) : '';					
+			(userAndPCShips.pc.total) ? setTimeout("pcLogic();", timePcThink) : '';					
 		} 
 
 		// Действия при Промахе 
@@ -823,7 +829,7 @@ let startGame = function(firstMove) {
 	// Если хожу я смотри field.addEventListener('click' ...
 
 	// Если компьютер ходит первым запускаем его ход
-	(firstMove == 'pc') ? setTimeout("pcLogic();", 1200) : '';
+	(firstMove == 'pc') ? setTimeout("pcLogic();", timePcThink) : '';
 };
 
 
@@ -892,7 +898,7 @@ let game = function(who) {
 			locked.classList.add('locked-user');
 
 			// pcLogic() - Запуск хода PC / возможен в трех местах
-			setTimeout("pcLogic();", 1200);		
+			setTimeout("pcLogic();", timePcThink);		
 			}	
 	
 	if (who == 'user') {
