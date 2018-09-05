@@ -32,13 +32,15 @@ getElement('.popup__choose-you').addEventListener('click', function () {
 
 // Создать двумерный массив: 
 // rows - строки, columns - столбцы
-let create2dArray = function (rows, columns) {
-   let arr = new Array(rows);
-   for (let i = 0; i < rows; i++) {
-       arr[i] = new Array(columns).fill(0);
+// IE8
+var create2dArray = function create2dArray(rows, columns) {
+   var arr = Array(rows);
+   for (var i = 0; i < rows; i++) {
+      arr[i] = Array.apply(null, Array(10)).map(Number.prototype.valueOf, 0);
    }
    return arr;
-}
+};
+
 
 // Матрицы для координат
 // matrixUser - поле по которому стреляет User
