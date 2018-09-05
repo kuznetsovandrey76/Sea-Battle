@@ -1,201 +1,193 @@
-* {
+*
+{
 	margin: 0;
 }
-
-body {
+body
+{
+	position: relative;
 	z-index: -20;
-	position: relative; 	
 }
-
-header {
+header
+{
+	font-size: 20px;
+	margin: 10px 0;
 	text-align: center;
 	width: 100%;
-	margin: 10px 0;
-	font-size: 20px;
-	
 }
-
-.popup {
-	position: absolute;
-	width: 40%;	
-	top: 200px;
-	left: 0;
-	right: 0;
-	margin: auto;
+.popup
+{
 	background: white;
-	padding: 20px;
-	text-align: center;	
 	border: 3px solid green;
-	-webkit-border-radius: 10px;
-	        border-radius: 10px;
+	border-radius: 10px;
+	left: 0;
+	margin: auto;
+	padding: 20px;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 200px;
+	webkit-border-radius: 10px;
+	width: 40%;
 }
-
-.popup__choose {
-	margin: 5px;
+.popup__choose
+{
 	font-size: 20px;
+	margin: 5px;
 }
-
-.hidden {
+.hidden
+{
 	display: none;
 }
-
-/* фон игрового поля, тетрадный лист */
-.battlefield {
-	/* делится на 30px + 2px закрыть границу */
-	width: 782px; 
-	height: 482px; 
-	position: relative; 
-	margin: 0 auto;
+.battlefield
+{
 	background: url('img/grid.png') repeat;
+	height: 482px;
+	margin: 0 auto;
+	position: relative;
+	width: 782px;
 	z-index: -10;
 }
-
-/* поле для морского боя */
-.field {
-	z-index: 1;
+.field
+{
 	position: absolute;
+	z-index: 1;
 }
-
-.field-user {
-	width: 330px;
+.field-user
+{
+	background: url('img/playfield.png') no-repeat;
 	height: 330px;
+	left: 34px;
 	position: relative;
 	top: 34px;
-	left: 34px;
-	background: url('img/playfield.png') no-repeat;
+	width: 330px;
 	z-index: 1;
 }
-
-.field-pc {
-	width: 330px;
+.field-pc
+{
+	background: url('img/playfield.png') no-repeat;
 	height: 330px;
+	left: 424px;
 	position: relative;
 	top: -296px;
-	left: 424px;
-	background: url('img/playfield.png') no-repeat;
+	width: 330px;
 }
-
-/* счетчики живых кораблей */
 .one,
 .two,
 .three,
-.four {
-	width: 30px;
-	height: 30px;
+.four
+{
 	background: url('img/sprite.png');
-	position: relative;	
-} 
-
-.one {
-	top: 357px;
-	left: 87px;
-	background-position: 0 -60px;
+	height: 30px;
+	position: relative;
+	width: 30px;
 }
-
+.one
+{
+	background-position: 0 -60px;
+	left: 87px;
+	top: 357px;
+}
 .one p,
 .two p,
 .three p,
-.four p {
+.four p
+{
+	font-size: 20px;
+	left: -15px;
 	position: absolute;
 	top: 3px;
-	left: -15px;
-	font-size: 20px;
 }
-
-.two {
-	top: 327px;
-	left: 147px;
+.two
+{
 	background-position: -60px -60px;
+	left: 147px;
+	top: 327px;
 }
-
-.three {
-	top: 297px;
-	left: 207px; 
+.three
+{
 	background-position: -120px -60px;
+	left: 207px;
+	top: 297px;
 }
-
-.four {
-	top: 267px;
-	left: 267px;
+.four
+{
 	background-position: -180px -60px;
+	left: 267px;
+	top: 267px;
 }
-
-.dot {
-	width: 30px;
-	height: 30px;
+.dot
+{
 	background: url('img/sprite.png');
 	background-position: -240px -120px;
-	position: absolute;	
-	/*z-index: 10;*/
+	height: 30px;
+	position: absolute;
+	width: 30px;
 }
-
 .name-user, 
-.name-pc {
+.name-pc
+{
 	position: absolute;
 	top: 2px;
 }
-
-.name-user {
-	left: 180px;	
+.name-user
+{
+	left: 180px;
 }
-
-.name-pc {
-	left: 570px;	
+.name-pc
+{
+	left: 570px;
 }
-
-.ship {
-	/*background: url('img/sprite.png');*/
-	position: absolute;	
+.ship
+{
+	position: absolute;
 	z-index: -5;
 }
-
-.knock {
-	width: 30px;
-	height: 30px;
-	position: absolute;	
+.knock
+{
 	background: url('img/sprite.png');
 	background-position: -300px -120px;
-
-} 
-.shade {
-	width: 30px;
 	height: 30px;
-	position: absolute;	
+	position: absolute;
+	width: 30px;
+}
+.shade
+{
 	background: url('img/sprite.png');
 	background-position: -360px -120px;
-} 
-.locked {
+	height: 30px;
 	position: absolute;
-	width: 310px;
-	height: 310px;
-	background: rgba(123, 123, 43, .3);
-	z-index: 10;	
-	top: 55px;
+	width: 30px;
 }
-
-.locked-user {
+.locked
+{
+	background: rgba(123, 123, 43, .3);
+	height: 310px;
+	position: absolute;
+	top: 55px;
+	width: 310px;
+	z-index: 10;
+}
+.locked-user
+{
 	left: 55px;
 }
-
-.locked-pc {
+.locked-pc
+{
 	left: 445px;
 }
-
-.info {
-	position: absolute;
-	top: 430px;
-	font-size: 30px;
-	width: 782px;
-	text-align: center;
+.info
+{
+	background: white;
 	color: darkred;
-	background: white;
-	
-
-	
+	font-size: 30px;
+	position: absolute;
+	text-align: center;
+	top: 430px;
+	width: 782px;
 }
-
-.input-name {
-	font-size: 24px;
+.input-name
+{
 	background: white;
+	font-size: 24px;
 	padding: 0 5px;
 }

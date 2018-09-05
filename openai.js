@@ -19,7 +19,7 @@ let yourMove = false;
 
 // Если при первоначальном выборе, говорю что хожу первым
 // изменяет флаг 
-getElement('.popup__choose-you').addEventListener('click', () => {
+getElement('.popup__choose-you').addEventListener('click', function () {
 	yourMove = true;	
 });
 
@@ -312,7 +312,7 @@ let userAndPCShips = {
 
 
 // Действия при нажатии User'a левой кнопки по игровому полю 
-field.addEventListener('click', (e) => {
+field.addEventListener('click', function(e) {
 	// 26px расстояние до внутреннего поля в playfield.png
 	if (e.offsetX - 26 > 2 && 
 		e.offsetX - 26 < 300 &&
@@ -398,7 +398,7 @@ field.addEventListener('click', (e) => {
 });
 
 // Действия при нажатии User'a правой кнопки по игровому полю 
-field.addEventListener('contextmenu', (e) => {
+field.addEventListener('contextmenu', function(e) {
 	// Убираем значение по умолчанию
 	e.preventDefault();
 	
@@ -551,9 +551,9 @@ let pcLogic = function() {
 				console.log(1, tempNotKilled, tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0])
 				if (tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0] == -1) {
 					// console.log('слева')
-					if (coordX == 1) {
+					if (coordY == 1) {
 						nextShots = [[coordY + 2, coordX]];				
-					} else if (coordX == 9) {
+					} else if (coordY == 9) {
 						nextShots = [[coordY - 1, coordX]];
 					} else {
 						nextShots = [[coordY - 1, coordX], [coordY + 2, coordX]];
@@ -562,6 +562,7 @@ let pcLogic = function() {
 				// Вторая палуба справа от первой - done
 				} else {
 					// console.log('справа')
+					// !!! Сменить на У , проблемы на нижнем крае
 					if (coordX == 2) {
 						// Левая граница
 						nextShots = [[coordY + 1, coordX]];	
@@ -615,8 +616,6 @@ let pcLogic = function() {
 		if (tempNotKilled.coord.length == 3) 	{
 			console.log('четырехпалубник')
 				// Отталкиваемся от координат второго корабля 
-				// coordX = tempNotKilled.coord[1][1]
-				// coordY = tempNotKilled.coord[1][0]				
 				coordX;
 				coordY;			
 				let nextShots;
@@ -637,10 +636,7 @@ let pcLogic = function() {
 					nextShots = [[coordX - 2, coordY]];
 				} else {
 					nextShots = [[coordX + 2, coordY], [coordX - 2, coordY]];
-				}
-
-				// coordX = tempNotKilled.coord[1][1]
-				// coordY = tempNotKilled.coord[1][0]				
+				}			
 
 			// Если расположение вертикальное
 		} else {
@@ -663,23 +659,7 @@ let pcLogic = function() {
 			coordY = nextShots[temp][1];
 			console.log(coordX, coordY)
 			coordString = '' + coordX + coordY;
-				
-		// необходимо создать координату в окрестности точки попадания
-		// отталкиваемся от длины tempNotKilled
-
-		// 1 - горизонтально / Х
-		// 2 - вертикально / У
-		// let direction = getRandom(2);
-		// if (tempNotKilled.coord.length == 1 && direction) {
-		// 	tempNotKilled.direction = direction;			
-		// } 
-
-		// let tempShots = {
-		// 	coordY: [coordX - 1, coordX + 1, coordX - 2, coordX + 2, coordX - 3, coordX + 3],
-		// 	coordX: [coordY - 1, coordY + 1, coordY - 2, coordY + 2, coordY - 3, coordY + 3]
-		// }		
 		}
-	// console.log(coordString)
 	}
 	// Проверка, есть ли такая координата в pcShots
 	// Если, есть перезапускаем ход компьютера
@@ -690,34 +670,6 @@ let pcLogic = function() {
 	} else {
 		// Координаты по которым стрелял компьютер
 		pcShots.add(coordString);
-
-
-	// после каждого хода изменять yourMove
-	// 1. Переделать в функцию действие по нажатию левой кнопки	
-
-	// 1.
-	// [*,*,X,*,*,*,X,*,*,*]
-	// [*,*,*,X,*,*,*,X,*,*]
-	// [X,*,*,*,X,*,*,*,X,*]
-	// [*,X,*,*,*,X,*,*,*,X]
-	// [*,*,X,*,*,*,X,*,*,*]
-	// [*,*,*,X,*,*,*,X,*,*]
-	// [X,*,*,*,X,*,*,*,X,*]
-	// [*,X,*,*,*,X,*,*,*,X]
-	// [*,*,X,*,*,*,X,*,*,*]
-	// [*,*,*,X,*,*,*,X,*,*]
-	// 2. 
-	// [*,*,*,X,*,*,*,X,*,*]
-	// [*,*,X,*,*,*,X,*,*,*]
-	// [*,X,*,*,*,X,*,*,*,X]
-	// [X,*,*,*,X,*,*,*,X,*]
-	// [*,*,*,X,*,*,*,X,*,*]
-	// [*,*,X,*,*,*,X,*,*,*]
-	// [*,X,*,*,*,X,*,*,*,X]
-	// [X,*,*,*,X,*,*,*,X,*]
-	// [*,*,*,X,*,*,*,X,*,*]
-	// [*,*,X,*,*,*,X,*,*,*]
-	// 3. Рандомный ход
 
 	// При попадании обстреливать область вокруг, горизонталь / вертикаль
 		// Действия при Попадании в корабль User'a
@@ -730,44 +682,12 @@ let pcLogic = function() {
 			// [вспомогательная] Обводка диагоналей
 			let diagonal = [[coordY - 1, coordX - 1], [coordY + 1, coordX - 1], [coordY - 1, coordX + 1], [coordY + 1, coordX + 1]];
 
-
-			// если попал сюда все У удаляются
-			// =============
-			// [coordY, coordX-2]
-			// [coordY, coordX+2]
-			// [coordY, coordX-3]
-			// [coordY, coordX+3]
-			// Иду по У
-			// если попал сюда все X удаляются
-			// =============
-			// [coordY-2, coordX]
-			// [coordY+2, coordX]
-			// [coordY-3, coordX]
-			// [coordY+3, coordX]
-
-			// classList.add('shade')
-			// console.log((coordX + 1) - 1, (coordY) - 1);
-			// console.log((coordX - 1) - 1, (coordY) - 1);
-			// console.log((coordX) - 1, (coordY + 1) - 1);
-			// console.log((coordX) - 1, (coordY -1 ) - 1);
-
-			// Запомнить координаты попадания, проверить не было ли выстрела до этого
-			// Заштриховать если возможно координаты по диагоналям
-			// Выбрать куда стрелять, горизонталь / вертикаль
-			// Обстреливать область по горизонтали / вертикали
-
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
 			div.classList.add('knock');
 			div.style.left = 26 + 30 * coordX - 30 + 'px';
 			div.style.top = 26 + 30 * coordY - 30 + 'px';
 			field.appendChild(div); 
-
-			// если попал
-			// 1. стрелять в область [x + 1] [x - 1] [y + 1] [y - 1]
-			// 2. если попал по х - стрелять только по нему пока не убьешь,
-				// тоже и для у
-			// 3. когда убил переходить дальше
 
 			// Ищу через coordArr какому кораблю принадлежат координаты попадания 
 			for(let i = 0; i < pcShips.length; i++) {
@@ -803,33 +723,17 @@ let pcLogic = function() {
 								(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
 							}									
 						}
-
-
-						// печать типа корабля в который попал
-						// console.log(pcShips[i].type);
-						// if (pcShips[i].type == 1) {
-						// 	console.log('single')
-						// 	// проставить заштрихованную область вокруг корабля
-						// 	// for (let i = 0; i < 8; i++ ) {
-						// 		// let field = document.querySelector('.field-user');
-						// 		// let div = document.createElement('div');
-						// 		// div.classList.add('shade');								
-						// 	// }
-						// } else if (pcShips[i].type == 2) {
-
-						// } else if (pcShips[i].type == 3) {
-
-						// } else if (pcShips[i].type == 4) {
-
-						// }
 						
 						// Действия при Убийстве корабле
 						// Перевожу массив coordArr с координатами корабля в строку и сравниваю с 0
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
 
+							// !!! когда убил заштриховать оставшиеся боковые области
+							// shade
+							console.log(tempNotKilled.coord)	
+
 							// Сбрасываю временную переменную
 							tempNotKilled.coord = [];
-							// !!! когда убил заштриховать оставшиеся боковые области
 
 							updateNumberOfShips(userAndPCShips, 'pc', pcShips[i].type);
 							// Убавить общее количество кораблей
@@ -893,7 +797,7 @@ let chooseFirstStepPlayer = document.querySelector('.popup__choose-first-move');
 
 info('Введи свое имя');
 
-yourNameButton.addEventListener('click', () => {
+yourNameButton.addEventListener('click', function() {
 	// Проверить, введено ли имя User'a
 	// если введено запустить код
 	info('Боец! Ты забыл ввести свое имя... Исправь это!');
@@ -904,7 +808,7 @@ yourNameButton.addEventListener('click', () => {
 	}
 });
 
-pcNameButton.addEventListener('click', () => {
+pcNameButton.addEventListener('click', function() {
 	// Проверить, введено ли имя PC
 	// если введено запустить код
 	info('ммм... Боец! Ты забыл ввести имя своего противника');
@@ -917,7 +821,7 @@ pcNameButton.addEventListener('click', () => {
 	}
 });
 
-chooseFirstStepPlayer.addEventListener('click', (e) => {
+chooseFirstStepPlayer.addEventListener('click', function(e) {
 	if (e.target.value === yourName.value || e.target.value === pcName.value) {
 		// console.log(`First step: ${e.target.value}`);
 		document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
