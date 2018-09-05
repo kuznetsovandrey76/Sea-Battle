@@ -4,6 +4,10 @@
 	<meta charset="UTF-8">
 	<title>Sea Battle</title>
 	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="bower_components/html5shiv/dist/html5shiv.js"></script>
+	<![endif]-->
 </head>
 <body>	
 	<header>Sea Battle</header>
@@ -11,7 +15,7 @@
 	<div class="battlefield">
 
 		<div class="popup popup__your-name">
-			<input class="popup__your-name--input" type="text" placeholder="...">
+			<input class="popup__your-name--input" type="text" placeholder="..." />
 			<input class="popup__your-name--button" type="submit" value="OK">
 		</div>
 		<div class="popup popup__pc-name hidden">
@@ -51,8 +55,6 @@
 		<p class='help'>* используй правую кнопку мыши, для заштриховывания</p>
 		<a href="https://github.com/kuznetsovandrey76/Sea-Battle" class='link'>GitHub repository</a>		
 	</footer>	
-	<!-- popup script -->
-	<!-- <script src="main.js"></script> -->
 	<script src="openai.js"></script>
 </body>
 </html>

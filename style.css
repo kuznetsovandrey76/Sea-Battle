@@ -39,6 +39,9 @@ header
 	font-size: 20px;
 	margin: 5px;
 }
+.popup__your-name--button {
+	cursor: pointer;
+}
 .hidden
 {
 	display: none;
