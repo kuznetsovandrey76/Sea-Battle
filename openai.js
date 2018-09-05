@@ -18,7 +18,7 @@ let getRandom = function(n) {
 let yourMove = false;
 
 // Время обдумывания компьютером
-let timePcThink = 100;
+let timePcThink = 1000;
 
 // Если при первоначальном выборе, говорю что хожу первым
 // изменяет флаг 
