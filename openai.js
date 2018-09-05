@@ -526,11 +526,11 @@ let pcLogic = function() {
 				nextShots = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];
 				
 			}
-			console.log(nextShots)
+			// console.log(nextShots)
 			let temp = getRandom(nextShots.length);
 			coordX = nextShots[temp][0];
 			coordY = nextShots[temp][1];
-			console.log(coordX, coordY)
+			// console.log(coordX, coordY)
 			coordString = '' + coordX + coordY;
 		} 
 
@@ -548,7 +548,7 @@ let pcLogic = function() {
 			// Если расположение горизонтальное
 			if (tempNotKilled.direction) {
 				// Вторая палуба слева от первой
-				console.log(1, tempNotKilled, tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0])
+				// console.log(1, tempNotKilled, tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0])
 				if (tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0] == -1) {
 					// console.log('слева')
 					if (coordY == 1) {
@@ -558,7 +558,7 @@ let pcLogic = function() {
 					} else {
 						nextShots = [[coordY - 1, coordX], [coordY + 2, coordX]];
 					}
-					console.log('слева', nextShots, coordX, coordY)
+					// console.log('слева', nextShots, coordX, coordY)
 				// Вторая палуба справа от первой - done
 				} else {
 					// console.log('справа')
@@ -572,14 +572,14 @@ let pcLogic = function() {
 					} else {
 						nextShots = [[coordY - 2, coordX], [coordY + 1, coordX]];
 					}
-					console.log('справа', nextShots, coordX, coordY)
+					// console.log('справа', nextShots, coordX, coordY)
 				} 
 
 				// Если расположение по вертикали
 				// !!! Работает с горизонтальными кораблями 
 			} else {
 				// Вторая палуба над первой
-				console.log(2, tempNotKilled, tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1])
+				// console.log(2, tempNotKilled, tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1])
 				if (tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1] == -1) {
 					// console.log('над')
 					if (coordY == 1) {
@@ -589,7 +589,7 @@ let pcLogic = function() {
 					} else {
 						nextShots = [[coordY, coordX + 2], [coordY, coordX - 1]];
 					}
-					console.log('над', nextShots, coordX, coordY)
+					// console.log('над', nextShots, coordX, coordY)
 				// Вторая палуба под первой - done
 				} else {
 					// console.log('под')
@@ -600,21 +600,21 @@ let pcLogic = function() {
 					} else {
 						nextShots = [[coordY, coordX + 1], [coordY, coordX - 2]];
 					}
-					console.log('под', nextShots, coordX, coordY)
+					// console.log('под', nextShots, coordX, coordY)
 				} 
 			}
-			console.log(nextShots)
+			// console.log(nextShots)
 			let temp = getRandom(nextShots.length);
 			coordX = nextShots[temp][0];
 			coordY = nextShots[temp][1];
-			console.log(coordX, coordY)
+			// console.log(coordX, coordY)
 			coordString = '' + coordX + coordY;
 
 		}
 
 		// Работа с четырехпалубным кораблем
 		if (tempNotKilled.coord.length == 3) 	{
-			console.log('четырехпалубник')
+			// console.log('четырехпалубник')
 				// Отталкиваемся от координат второго корабля 
 				coordX;
 				coordY;			
@@ -653,11 +653,11 @@ let pcLogic = function() {
 				}
 
 		}
-			console.log(nextShots)
+			// console.log(nextShots)
 			let temp = getRandom(nextShots.length);
 			coordX = nextShots[temp][0];
 			coordY = nextShots[temp][1];
-			console.log(coordX, coordY)
+			// console.log(coordX, coordY)
 			coordString = '' + coordX + coordY;
 		}
 	}
@@ -677,10 +677,12 @@ let pcLogic = function() {
 
 			// Временная переменная с координатами последнего попадания
 			tempNotKilled.coord.push([coordX, coordY]);
-			console.log(tempNotKilled.coord)	
+			// console.log(tempNotKilled.coord)	
 
 			// [вспомогательная] Обводка диагоналей
 			let diagonal = [[coordY - 1, coordX - 1], [coordY + 1, coordX - 1], [coordY - 1, coordX + 1], [coordY + 1, coordX + 1]];
+			// [вспомогательная] Обводка боковых полей, убитых кораблей 
+			let neighbourhood = [[coordY, coordX - 1], [coordY, coordX + 1], [coordY - 1, coordX], [coordY + 1, coordX]];
 
 			let field = document.querySelector('.field-pc');
 			let div = document.createElement('div');
@@ -729,8 +731,38 @@ let pcLogic = function() {
 						if (!(parseInt((pcShips[i].coordArr).join('')))) {
 
 							// !!! когда убил заштриховать оставшиеся боковые области
+							// Заштриховываем область по диагоналям координаты попадания 
+
+							// Обработка четырех направлений одной координаты
+							for (let i = 0; i < 4; i++ ) {
+								// необходима проверка обрисовки первой координаты
+
+								console.log(tempNotKilled.coord.length)
+								// Прорисовываем на поле заштрихованные области
+								// за исключение тех что лежат вне игрового поля
+								if (neighbourhood[i][1] < 11 && neighbourhood[i][0] < 11 && 
+										neighbourhood[i][1] > 0 && neighbourhood[i][0] > 0) {
+									
+									let field = document.querySelector('.field-pc');
+
+									// Добавляем в pcShots диагональные значения 
+									// Чтобы не стрелять повторно в заштрихованную область
+									let coordString = '' + neighbourhood[i][1] + neighbourhood[i][0];
+									console.log(coordString)
+
+									// Не заштриховывать поля по которым уже стреляли 
+									if (!pcShots.has(coordString)) {
+										let div = document.createElement('div');
+										div.classList.add('shade');								
+										div.style.left = 26 + 30 * neighbourhood[i][1] - 30 + 'px';
+										div.style.top = 26 + 30 * neighbourhood[i][0] - 30 + 'px';
+										field.appendChild(div); 									
+									}	
+									(!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
+								}									
+							}
 							// shade
-							console.log(tempNotKilled.coord)	
+							console.log('++++++++++++++')	
 
 							// Сбрасываю временную переменную
 							tempNotKilled.coord = [];
@@ -742,7 +774,7 @@ let pcLogic = function() {
 						} 
 				} 			
 			}	
-			console.log(coordX, coordY);
+			// console.log(coordX, coordY);
 			// Если PC попал, повторный запуск его хода
 			// Когда все корабли User'a убиты, прекратить игру / не вызывать pcLogic()
 			// Передаю coordY и coordX для определения направления корабля
