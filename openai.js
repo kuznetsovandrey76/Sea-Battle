@@ -18,7 +18,7 @@ let getRandom = function(n) {
 let yourMove = false;
 
 // Время обдумывания компьютером
-let timePcThink = 1000;
+let timePcThink = 100;
 
 // Если при первоначальном выборе, говорю что хожу первым
 // изменяет флаг 
@@ -548,11 +548,11 @@ let pcLogic = function() {
 		if (tempNotKilled.coord.length == 2) {
 
 			// Отталкиваемся от координат второго корабля 
-			coordX = tempNotKilled.coord[1][1]
-			coordY = tempNotKilled.coord[1][0]
+			coordX = tempNotKilled.coord[1][0]
+			coordY = tempNotKilled.coord[1][1]
 			let nextShots;
 
-			console.log('num: 1\n', tempNotKilled.coord, '\nварианты: ', nextShots, '\nx:', coordX, 'y:', coordY, '\nвыстрелы: ', pcShots)
+			console.log('num: 1\n', tempNotKilled.coord, '\nварианты: ', nextShots, '\nx:', coordX, 'y:', coordY)
 			// по уже имеющимся координатам определить направление корабля
 			// 1 - горизонтальное
 			// 0 - вертикальное
@@ -565,29 +565,29 @@ let pcLogic = function() {
 				// Вторая палуба СЛЕВА от первой
 				if (tempNotKilled.coord[1][0]-tempNotKilled.coord[0][0] == -1) {
 
-					if (coordY == 1) {
-						nextShots = [[coordY + 2, coordX]];	
+					if (coordX == 1) {
+						nextShots = [[coordX + 2, coordY]];	
 
-					} else if (coordY == 9) {
-						nextShots = [[coordY - 1, coordX]];
+					} else if (coordX == 9) {
+						nextShots = [[coordX - 1, coordY]];
 
 					} else {
-						nextShots = [[coordY - 1, coordX], [coordY + 2, coordX]];
+						nextShots = [[coordX - 1, coordY], [coordX + 2, coordY]];
 					}
 
 				// Вторая палуба СПРАВА от первой 				
 				} else {
 
-					if (coordY == 2) {
+					if (coordX == 2) {
 						// Левая граница
-						nextShots = [[coordY + 1, coordX]];	
+						nextShots = [[coordX + 1, coordY]];	
 						// Правая граница 
 
-					} else if (coordY == 10) {
-						nextShots = [[coordY - 2, coordX]];
+					} else if (coordX == 10) {
+						nextShots = [[coordX - 2, coordY]];
 
 					} else {
-						nextShots = [[coordY - 2, coordX], [coordY + 1, coordX]];
+						nextShots = [[coordX - 2, coordY], [coordX + 1, coordY]];
 					}
 				} 
 
@@ -597,28 +597,29 @@ let pcLogic = function() {
 				// Вторая палуба НАД первой
 				if (tempNotKilled.coord[1][1] - tempNotKilled.coord[0][1] == -1) {
 					if (coordY == 1) {
-						nextShots = [[coordY, coordX + 2]];				
+						nextShots = [[coordX, coordY + 2]];				
 					
-					} else if (coordY == 9) {
-						nextShots = [[coordY, coordX - 1]];
+					} else if (coordX == 9) {
+						nextShots = [[coordX, coordY - 1]];
 
 					} else {
-						nextShots = [[coordY, coordX + 2], [coordY, coordX - 1]];
+						nextShots = [[coordX, coordY + 2], [coordX, coordY - 1]];
 					}
 
 				// Вторая палуба ПОД первой 
 				} else {
 
 					if (coordY == 2) {
-						nextShots = [[coordY, coordX + 1]];	
+						nextShots = [[coordX, coordY + 1]];	
 
 					} else if (coordY == 10) {
-						nextShots = [[coordY, coordX - 2]];					} else {
-						nextShots = [[coordY, coordX + 1], [coordY, coordX - 2]];
+						nextShots = [[coordX, coordY - 2]];					
+					} else {
+						nextShots = [[coordX, coordY + 1], [coordX, coordY - 2]];
 					}
 				} 
 			}
-			console.log('num: 2\n', tempNotKilled.coord, '\nварианты: ', nextShots, '\nx:', coordX, 'y:', coordY, '\nвыстрелы: ', pcShots)
+			console.log('num: 2\n', tempNotKilled.coord, '\nварианты: ', nextShots, '\nx:', coordX, 'y:', coordY)
 
 			let temp = getRandom(nextShots.length);
 			coordX = nextShots[temp][0];
