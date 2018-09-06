@@ -1,0 +1,207 @@
+*
+{
+	margin: 0;
+}
+body
+{
+	position: relative;
+	z-index: -20;
+}
+footer {
+	margin: 10px;
+	text-align: center;
+	width: 100%;
+}
+header
+{
+	font-size: 20px;
+	margin: 10px 0;
+	text-align: center;
+	width: 100%;
+}
+.popup
+{
+	background: white;
+	border: 3px solid green;
+	border-radius: 10px;
+	left: 0;
+	margin: auto;
+	padding: 20px;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 200px;
+	webkit-border-radius: 10px;
+	width: 40%;
+}
+.popup__choose
+{
+	font-size: 20px;
+	margin: 5px;
+}
+.popup__your-name--button {
+	cursor: pointer;
+}
+.hidden
+{
+	display: none;
+}
+.battlefield
+{
+	background: url('img/grid.png') repeat;
+	height: 482px;
+	margin: 0 auto;
+	position: relative;
+	width: 782px;
+	z-index: -10;
+}
+.field
+{
+	position: absolute;
+	z-index: 1;
+}
+.field-user
+{
+	background: url('img/playfield.png') no-repeat;
+	height: 330px;
+	left: 34px;
+	position: relative;
+	top: 34px;
+	width: 330px;
+	z-index: 1;
+}
+.field-pc
+{
+	background: url('img/playfield.png') no-repeat;
+	height: 330px;
+	left: 424px;
+	position: relative;
+	top: -296px;
+	width: 330px;
+}
+.one,
+.two,
+.three,
+.four
+{
+	background: url('img/sprite.png');
+	height: 30px;
+	position: relative;
+	width: 30px;
+}
+.one
+{
+	background-position: 0 -60px;
+	left: 87px;
+	top: 357px;
+}
+.one p,
+.two p,
+.three p,
+.four p
+{
+	font-size: 20px;
+	left: -15px;
+	position: absolute;
+	top: 3px;
+}
+.two
+{
+	background-position: -60px -60px;
+	left: 147px;
+	top: 327px;
+}
+.three
+{
+	background-position: -120px -60px;
+	left: 207px;
+	top: 297px;
+}
+.four
+{
+	background-position: -180px -60px;
+	left: 267px;
+	top: 267px;
+}
+.dot
+{
+	background: url('img/sprite.png');
+	background-position: -240px -120px;
+	height: 30px;
+	position: absolute;
+	width: 30px;
+}
+.name-user, 
+.name-pc
+{
+	position: absolute;
+	top: 2px;
+}
+.name-user
+{
+	left: 180px;
+}
+.name-pc
+{
+	left: 570px;
+}
+.ship
+{
+	position: absolute;
+	z-index: -5;
+}
+.knock
+{
+	background: url('img/sprite.png');
+	background-position: -300px -120px;
+	height: 30px;
+	position: absolute;
+	width: 30px;
+}
+.shade
+{
+	background: url('img/sprite.png');
+	background-position: -360px -120px;
+	height: 30px;
+	position: absolute;
+	width: 30px;
+}
+.link {
+	text-decoration: none;
+}
+.locked
+{
+	background: rgba(123, 123, 43, .3);
+	height: 310px;
+	position: absolute;
+	top: 55px;
+	width: 310px;
+	z-index: 10;
+}
+.locked-user
+{
+	left: 55px;
+}
+.locked-pc
+{
+	left: 445px;
+}
+.info
+{
+	background: white;
+	color: darkred;
+	font-size: 30px;
+	position: absolute;
+	text-align: center;
+	top: 430px;
+	width: 782px;
+}
+.input-name
+{
+	background: white;
+	font-size: 24px;
+	padding: 0 5px;
+}
+.help {
+	color: darkred;
+}

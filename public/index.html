@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sea Battle</title>
+	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="bower_components/html5shiv/dist/html5shiv.js"></script>
+	<![endif]-->
+</head>
+<body>	
+	<header>Sea Battle</header>
+
+	<div class="battlefield">
+
+		<div class="popup popup__your-name">
+			<input class="popup__your-name--input" type="text" placeholder="..." />
+			<input class="popup__your-name--button" type="submit" value="OK">
+		</div>
+		<div class="popup popup__pc-name hidden">
+			<input class="popup__pc-name--input" type="text" placeholder="...">
+			<input class="popup__pc-name--button" type="submit" value="OK">
+		</div>
+		<div class="popup popup__choose-first-move hidden">
+			<p>choose whose first move:</p>					
+			<input class="popup__choose-you popup__choose" data-name="user" type="submit">
+			<input class="popup__choose-pc popup__choose" data-name="pc" type="submit">
+		</div>
+
+		<!-- Поле по которому стреляет User -->
+		<p class="input-name name-user"></p>
+		<div class="field field-user hidden">
+			<div class="dot hidden"></div>
+			<div class="one"><p class="user">4</p></div>
+			<div class="two"><p class="user">3</p></div>
+			<div class="three"><p class="user">2</p></div>
+			<div class="four"><p class="user">1</p></div>				
+		</div>	
+
+		<!-- Поле по которому стреляет PC -->
+		<p class="input-name name-pc"></p>
+		<div class="field field-pc hidden">
+			<div class="dot hidden"></div>
+			<div class="one"><p class="pc"></p></div>
+			<div class="two"><p class="pc"></p></div>
+			<div class="three"><p class="pc"></p></div>
+			<div class="four"><p class="pc"></p></div>				
+		</div>	
+
+		<p class="info"></p>	
+
+	</div> 
+	<footer>
+		<p class='help'>* используй правую кнопку мыши, для заштриховывания</p>
+		<a href="https://github.com/kuznetsovandrey76/Sea-Battle" class='link'>GitHub repository</a>		
+	</footer>	
+	<script src="openai.js"></script>
+</body>
+</html>
