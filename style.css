@@ -2,20 +2,22 @@
 {
 	margin: 0;
 }
-body
+.body
 {
 	position: relative;
-	z-index: -20;
 }
-footer {
-	margin: 10px;
-	text-align: center;
-	width: 100%;
+.body-for-not-ie {
+	z-index: -10;	
 }
-header
+.header
 {
 	font-size: 20px;
 	margin: 10px 0;
+	text-align: center;
+	width: 100%;
+}
+.footer {
+	margin: 10px;
 	text-align: center;
 	width: 100%;
 }
