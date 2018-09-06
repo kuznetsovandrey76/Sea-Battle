@@ -781,20 +781,19 @@
 								
 
 									// Обработка четырех направлений одной координаты
-									for (var i = 0; i < 4; i++ ) {
-									console.log('test i', i)
+									for (var iter = 0; iter < 4; iter++ ) {
 										// !!! необходима проверка обрисовки первой координаты
 
 										// Прорисовываем на поле заштрихованные области
 										// за исключение тех что лежат вне игрового поля
-										if (neighbourhood[i][1] < 11 && neighbourhood[i][0] < 11 && 
-												neighbourhood[i][1] > 0 && neighbourhood[i][0] > 0) {
+										if (neighbourhood[iter][1] < 11 && neighbourhood[iter][0] < 11 && 
+												neighbourhood[iter][1] > 0 && neighbourhood[iter][0] > 0) {
 											
 											var field = document.querySelector('.field-pc');
 
 											// Добавляем в pcShots диагональные значения 
 											// Чтобы не стрелять повторно в заштрихованную область
-											var coordString = '' + neighbourhood[i][1] + neighbourhood[i][0];
+											var coordString = '' + neighbourhood[iter][1] + neighbourhood[iter][0];
 											// console.log(2, coordString)
 
 											// Не заштриховывать поля по которым уже стреляли 
@@ -802,8 +801,8 @@
 											if (pcShotsArr.indexOf(coordString) == -1) {
 												var div = document.createElement('div');
 												div.classList.add('shade');								
-												div.style.left = 26 + 30 * neighbourhood[i][1] - 30 + 'px';
-												div.style.top = 26 + 30 * neighbourhood[i][0] - 30 + 'px';
+												div.style.left = 26 + 30 * neighbourhood[iter][1] - 30 + 'px';
+												div.style.top = 26 + 30 * neighbourhood[iter][0] - 30 + 'px';
 												field.appendChild(div); 									
 											}	
 											// (!pcShots.has(coordString)) ? pcShots.add(coordString) : '';
