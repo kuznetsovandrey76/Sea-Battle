@@ -817,20 +817,25 @@ var startGame = function(firstMove) {
 
 // POPUP
 
-var yourName = document.querySelector('.popup__your-name--input');
-var pcName = document.querySelector('.popup__pc-name--input');
+// Имена игроков
+var yourName = getElement('.popup__your-name--input');
+var pcName = getElement('.popup__pc-name--input');
 
-var yourNameButton = document.querySelector('.popup__your-name--button');
-var pcNameButton = document.querySelector('.popup__pc-name--button');
+// Для передачи имен
+var yourNameButton = getElement('.popup__your-name--button');
+var pcNameButton = getElement('.popup__pc-name--button');
 
-var chooseFirstStepPlayer = document.querySelector('.popup__choose-first-move');
+var chooseFirstStepPlayer = getElement('.popup__choose-first-move');
 
 info('Введи свое имя');
 
 yourNameButton.addEventListener('click', function() {
+
 	// Проверить, введено ли имя User'a
-	// если введено запустить код
+	// Если имя не введено, выводить сообщение
 	info('Боец! Ты забыл ввести свое имя... Исправь это!');
+
+	// Имя введено, запустить код
 	if (yourName.value) {
 		document.querySelector('.popup__your-name').classList.toggle('hidden');
 		document.querySelector('.popup__pc-name').classList.toggle('hidden');	
@@ -839,9 +844,10 @@ yourNameButton.addEventListener('click', function() {
 });
 
 pcNameButton.addEventListener('click', function() {
+
 	// Проверить, введено ли имя PC
-	// если введено запустить код
 	info('ммм... Боец! Ты забыл ввести имя своего противника');
+
 	if (pcName.value) {
 		document.querySelector('.popup__pc-name').classList.toggle('hidden');
 		document.querySelector('.popup__choose-first-move').classList.toggle('hidden');
@@ -865,7 +871,6 @@ chooseFirstStepPlayer.addEventListener('click', function(e) {
 		startGame(e.target.getAttribute('data-name'));
 	}
 });	
-
 
 
 // ПОРЯДОК ХОДОВ
