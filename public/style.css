@@ -2,10 +2,13 @@
 {
 	margin: 0;
 }
-/*body
+.body
 {
 	position: relative;
-}*/
+}
+.body-for-not-ie {
+	z-index: -10;	
+}
 .header
 {
 	font-size: 20px;
