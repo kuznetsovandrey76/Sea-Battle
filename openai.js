@@ -394,7 +394,7 @@ field.addEventListener('contextmenu', function(e) {
 	e.preventDefault();
 	
 	// Убираем ранее добавленный shade
-	if (e.target.classList.value == 'shade') {
+	if (e.target.classList.valueOf() == 'shade') {
 		e.target.classList.add('hidden');
 	}
 
